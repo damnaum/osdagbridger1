@@ -6,5 +6,5 @@ standalone use in preliminary design.
 from .designer import initial_sizing
 from .dto import PlateGirderInput
 
-__all__ = ["initial_sizing", "PlateGirderInput"]
+__all__ = ["PlateGirderInput", "initial_sizing"]
 

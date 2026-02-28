@@ -16,11 +16,10 @@ Reference:
 """
 
 import math
-from typing import Tuple, Optional, Dict, Any, Literal
+from typing import Any, Dict, Optional, Tuple
 
-from .dto import PlateGirderInput, PlateGirderSection, SteelGrade
 from .analyser import analyze_plate_girder
-
+from .dto import PlateGirderInput, PlateGirderSection
 
 # ──────────────────────────────────────────────────────────────
 # Material constants (IS 800:2007, Clause 2.2)
@@ -130,8 +129,8 @@ def calculate_section_properties(
     t_web: float,
     b_tf: float,
     t_tf: float,
-    b_bf: float = None,
-    t_bf: float = None,
+    b_bf: Optional[float] = None,
+    t_bf: Optional[float] = None,
     fy: float = 250.0,
 ) -> PlateGirderSection:
     """
@@ -445,7 +444,7 @@ def calculate_moment_capacity(
 def calculate_shear_capacity(
     section: PlateGirderSection,
     fy: float,
-    stiffener_spacing: float = None,
+    stiffener_spacing: Optional[float] = None,
 ) -> Dict[str, float]:
     """
     Calculate shear capacity as per IS 800:2007, Clause 8.4.
@@ -702,8 +701,7 @@ def design_plate_girder(input_data: PlateGirderInput) -> Dict[str, Any]:
     }
 
     fy = input_data.get_yield_strength()
-    # fu reserved for future connection design checks
-    fu = input_data.get_ultimate_strength()  # noqa: F841
+    fu = input_data.get_ultimate_strength()  # for future connection design checks
     span_mm = input_data.effective_span
     span_m = span_mm / 1000
 
@@ -746,6 +744,15 @@ def design_plate_girder(input_data: PlateGirderInput) -> Dict[str, Any]:
         "web_slenderness": section.web_slenderness,
         "flange_slenderness": section.flange_slenderness,
         "weight_per_m_kN": section.weight_per_meter,
+    }
+
+    results["material"] = {
+        "steel_grade": input_data.steel_grade.value,
+        "fy_MPa": fy,
+        "fu_MPa": fu,
+        "E_MPa": E_STEEL,
+        "gamma_m0": GAMMA_M0,
+        "gamma_m1": GAMMA_M1,
     }
 
     # ── Step 3: Dead load estimation ──

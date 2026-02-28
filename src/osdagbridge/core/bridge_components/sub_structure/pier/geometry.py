@@ -3,8 +3,8 @@
 Supports rectangular and circular pier cross-sections with height,
 breadth / diameter, and cap-level offsets.
 """
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 from typing import Literal
 
 

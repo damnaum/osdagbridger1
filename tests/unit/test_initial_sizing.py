@@ -1,11 +1,11 @@
 """Unit tests for plate girder initial sizing module."""
 import pytest
 
-from osdagbridge.core.bridge_types.plate_girder.initial_sizing import (
-    initial_sizing,
-    PlateGirderInput,
-)
 from osdagbridge.core.bridge_types.plate_girder.dto import SteelGrade
+from osdagbridge.core.bridge_types.plate_girder.initial_sizing import (
+    PlateGirderInput,
+    initial_sizing,
+)
 
 
 class TestInitialSizingModule:

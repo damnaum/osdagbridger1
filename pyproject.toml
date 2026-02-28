@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=68.0", "wheel>=0.41"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "osdagbridge"
-version = "0.1.0"
-description = "OsdagBridge - Shared core for analysis and design of steel bridges (CLI, Desktop, Web)"
+version = "0.2.0"
+description = "OsdagBridge — Shared core for analysis and design of steel bridges (CLI, Desktop, Web)"
 readme = "README.md"
 license = { file = "LICENSE.txt" }
 authors = [
@@ -13,18 +13,26 @@ authors = [
 ]
 requires-python = ">=3.9"
 
-keywords = ["bridge", "steel", "structural engineering", "analysis", "IRC", "IS 800", "Osdag"]
+keywords = [
+  "bridge", "steel", "structural engineering", "analysis",
+  "IRC", "IS 800", "Osdag", "plate girder", "design",
+]
 
 classifiers = [
+  "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Intended Audience :: Science/Research",
   "Intended Audience :: Education",
   "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Typing :: Typed",
 ]
 
 # ------------------------------
@@ -55,12 +63,7 @@ report = ["pylatex>=1.4"]
 # Web backend (Django + DRF)
 web-backend = [
   "Django>=4.2",
-  "djangorestframework>=3.14"
-]
-
-# Web frontend dev tools (not required for backend runtime)
-web-frontend = [
-  "nodejs-bin>=18.0",     # Optional if you want version-pinning
+  "djangorestframework>=3.14",
 ]
 
 # Desktop GUI
@@ -68,11 +71,22 @@ desktop = ["PySide6>=6.5"]
 
 # Developer tools
 dev = [
-  "pytest",
-  "pytest-cov",
-  "ruff",
-  "mypy",
+  "pytest>=7.0",
+  "pytest-cov>=4.0",
+  "ruff>=0.4",
+  "mypy>=1.0",
 ]
+
+# All optional dependencies (for CI)
+all = [
+  "osdagbridge[dev,report]",
+]
+
+[project.urls]
+Homepage = "https://github.com/damnaum/osdagbridger1"
+Repository = "https://github.com/damnaum/osdagbridger1"
+Documentation = "https://github.com/damnaum/osdagbridger1/tree/main/docs"
+Issues = "https://github.com/damnaum/osdagbridger1/issues"
 
 [project.scripts]
 osdagbridge = "osdagbridge.cli.__main__:main"
@@ -87,34 +101,55 @@ package-dir = { "" = "src" }
 where = ["src"]
 exclude = ["tests*", "examples*"]
 
-[tool.setuptools.dynamic]
-readme = { file = "README.md" }
-
 # ------------------------------
-# Tools: Ruff, Black, Mypy, Pytest
+# Tools: Ruff, Mypy, Pytest
 # ------------------------------
 
 [tool.ruff]
 line-length = 100
 target-version = "py39"
 
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "UP",   # pyupgrade
+  "B",    # flake8-bugbear
+  "SIM",  # flake8-simplify
+  "RUF",  # ruff-specific rules
+]
+ignore = [
+  "E501",    # line too long (handled by formatter)
+  "B008",    # function call in default argument
+  "SIM108",  # ternary operator
+  "UP006",   # non-pep585-annotation — keep List/Dict for Python 3.9
+  "UP035",   # deprecated-import — typing imports needed for Python 3.9
+  "UP045",   # non-pep604-annotation — Optional needed without __future__
+  "RUF002",  # ambiguous unicode in docstrings — engineering symbols are fine
+  "RUF003",  # ambiguous unicode in comments — engineering symbols are fine
+]
+
 [tool.ruff.lint.per-file-ignores]
-# Protected production files — do not modify source, suppress lint here
-"src/osdagbridge/core/bridge_types/plate_girder/designer.py" = ["F401", "F841"]
-"src/osdagbridge/core/utils/codes/load_combinations.py" = ["F401"]
 # Test files — unused imports are common in test setup
 "tests/**" = ["F401", "F841"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["osdagbridge"]
 
 [tool.mypy]
 python_version = "3.9"
 ignore_missing_imports = true
 strict = false
+warn_return_any = true
+warn_unused_configs = true
 
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-ra -q --strict-markers"
 testpaths = [
-  "tests"
+  "tests",
 ]
 markers = [
   "slow: marks tests as slow (deselect with -m 'not slow')",

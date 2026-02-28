@@ -1,15 +1,23 @@
-"""Core package for OsdagBridge - analysis and design of steel bridges."""
+"""Core package for OsdagBridge — analysis and design of steel bridges.
+
+Public API surface re-exported for convenience.
+"""
+
 from .exceptions import (
-    OsdagError,
+    CodeNotFoundError,
+    ConfigurationError,
     DesignFailedError,
     InputValidationError,
+    OsdagError,
     SolverError,
 )
 
 __all__ = [
-    "OsdagError",
+    "CodeNotFoundError",
+    "ConfigurationError",
     "DesignFailedError",
     "InputValidationError",
+    "OsdagError",
     "SolverError",
 ]
 

@@ -1,1 +1,6 @@
-"""box_girder module."""
+"""Box Girder Bridge Design Module (stub).
+
+Planned for v0.2.  Shares the same interface as ``plate_girder``.
+"""
+
+IMPLEMENTED = False

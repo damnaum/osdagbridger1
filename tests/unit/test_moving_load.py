@@ -8,25 +8,26 @@ Tests verify:
 - Complete moving load analysis results
 """
 
-import pytest
 import math
+
 import numpy as np
+import pytest
 
 from osdagbridge.core.loads.moving_load import (
+    InfluenceLine,
+    analyze_moving_load,
+    calculate_load_effect_from_il,
+    find_absolute_max_moment,
+    find_critical_vehicle_position,
     generate_moment_influence_line,
     generate_shear_influence_line,
-    calculate_load_effect_from_il,
-    find_critical_vehicle_position,
-    find_absolute_max_moment,
-    analyze_moving_load,
-    InfluenceLine,
 )
 from osdagbridge.core.utils.codes.irc6_2017 import (
-    get_class_a_train,
-    get_class_70r_wheeled,
-    VehicleLoad,
     AxleLoad,
+    VehicleLoad,
     VehicleType,
+    get_class_70r_wheeled,
+    get_class_a_train,
 )
 
 
@@ -156,7 +157,7 @@ class TestCriticalPosition:
         il = generate_moment_influence_line(span, 15.0)
         vehicle = get_class_a_train()
 
-        crit_pos, max_effect = find_critical_vehicle_position(il, vehicle)
+        _crit_pos, max_effect = find_critical_vehicle_position(il, vehicle)
         assert max_effect > 0
 
     def test_critical_moment_reasonable(self):
@@ -176,7 +177,7 @@ class TestAbsoluteMaxMoment:
     def test_max_moment_location_near_midspan(self):
         """Max moment location should be near midspan for symmetric loading."""
         vehicle = get_class_a_train()
-        max_m, location, _ = find_absolute_max_moment(30.0, vehicle)
+        _max_m, location, _ = find_absolute_max_moment(30.0, vehicle)
         # Should be within 30% to 70% of span
         assert 9.0 < location < 21.0
 

@@ -15,9 +15,10 @@ Reference:
     IRC:6-2017 for vehicle configurations
 """
 
-import numpy as np
-from typing import Tuple, Dict
 from dataclasses import dataclass
+from typing import Dict, Tuple
+
+import numpy as np
 
 from ..utils.codes.irc6_2017 import VehicleLoad
 

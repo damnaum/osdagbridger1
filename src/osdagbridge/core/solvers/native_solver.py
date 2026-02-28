@@ -1,15 +1,20 @@
 """Native lightweight beam solver for simply supported spans.
 
-Implements direct stiffness method for single-span beams.
-Sufficient for preliminary design — use OpenSees/OspGrillage for detailed analysis.
+Implements equilibrium-based shear/moment and numerical double-integration
+for deflection.  Sufficient for preliminary design — use OpenSees or
+OspGrillage for detailed analysis.
 """
+
+from __future__ import annotations
+
+from typing import List, Optional, Tuple
+
 import numpy as np
-from typing import Tuple
 
 
 def solve_simply_supported_beam(
     span: float,
-    point_loads: list = None,
+    point_loads: Optional[List[Tuple[float, float]]] = None,
     udl: float = 0.0,
     EI: float = 1.0,
     num_points: int = 201,
@@ -41,7 +46,7 @@ def solve_simply_supported_beam(
         ra += load * (span - pos) / span
     ra += udl * span / 2
 
-    rb = sum(p[1] for p in point_loads) + udl * span - ra  # noqa: F841
+    # rb is implicit: sum(loads) + udl*span - ra
 
     for i, xi in enumerate(x):
         # Shear force
@@ -58,19 +63,27 @@ def solve_simply_supported_beam(
                 m -= load * (xi - pos)
         bm[i] = m
 
-    # Deflection by numerical double integration (trapezoidal rule) of M/EI
+    # Deflection by double-integration of M/EI using trapezoidal rule,
+    # enforcing zero deflection at both supports (x=0 and x=L).
     if EI > 0:
         dx = span / (num_points - 1)
         curvature = bm / EI  # 1/mm
 
-        # First integration: slope
-        slope = np.cumsum(curvature) * dx
+        # First integration → slope (up to an unknown constant C1)
+        slope = np.zeros_like(x)
+        for i in range(1, num_points):
+            slope[i] = slope[i - 1] + 0.5 * (curvature[i - 1] + curvature[i]) * dx
 
-        # Second integration: deflection
-        deflection = np.cumsum(slope) * dx
+        # Second integration → deflection (up to C1*x + C2)
+        raw_defl = np.zeros_like(x)
+        for i in range(1, num_points):
+            raw_defl[i] = raw_defl[i - 1] + 0.5 * (slope[i - 1] + slope[i]) * dx
 
-        # Apply boundary conditions (zero deflection at supports)
-        deflection -= np.linspace(deflection[0], deflection[-1], num_points)
+        # Boundary conditions: deflection = 0 at x = 0 and x = L
+        # raw_defl already has raw_defl[0] = 0, subtract linear ramp to
+        # force raw_defl[-1] = 0.
+        correction = np.linspace(0, raw_defl[-1], num_points)
+        deflection = raw_defl - correction
 
     return x, sf, bm, deflection
 

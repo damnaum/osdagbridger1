@@ -4,6 +4,7 @@ Basic axial and slenderness checks for RC piers. Full seismic
 design is out of scope for v0.1.
 """
 import math
+
 from .geometry import PierGeometry
 
 

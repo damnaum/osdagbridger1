@@ -9,27 +9,27 @@ Tests IS 800:2007 design calculations:
 - Full design workflow
 """
 import math
+
 import pytest
 
 from osdagbridge.core.bridge_types.plate_girder.designer import (
+    E_STEEL,
+    GAMMA_M0,
+    GAMMA_M1,
     calculate_epsilon,
-    initial_sizing,
-    calculate_section_properties,
-    classify_section,
     calculate_moment_capacity,
+    calculate_section_properties,
     calculate_shear_capacity,
     check_deflection,
     check_web_bearing,
+    classify_section,
     design_plate_girder,
-    GAMMA_M0,
-    GAMMA_M1,
-    E_STEEL,
+    initial_sizing,
 )
 from osdagbridge.core.bridge_types.plate_girder.dto import (
     PlateGirderInput,
     SteelGrade,
 )
-
 
 # ── Epsilon ──────────────────────────────────────────────────
 

@@ -3,14 +3,15 @@
 Tests that PlateGirderInput correctly validates inputs
 and that YAML round-tripping works.
 """
-import pytest
-import yaml
 from pathlib import Path
 
+import pytest
+import yaml
+
 from osdagbridge.core.bridge_types.plate_girder.dto import (
+    BridgeSpanType,
     PlateGirderInput,
     SteelGrade,
-    BridgeSpanType,
 )
 
 
@@ -23,21 +24,21 @@ class TestPlateGirderInputValidation:
         assert inp.effective_span == 20000
 
     def test_rejects_zero_span(self):
-        with pytest.raises(Exception):
+        with pytest.raises((ValueError, Exception)):
             PlateGirderInput(
                 project_name="P", bridge_name="B",
                 effective_span=0, girder_spacing=3000,
             )
 
     def test_rejects_negative_span(self):
-        with pytest.raises(Exception):
+        with pytest.raises((ValueError, Exception)):
             PlateGirderInput(
                 project_name="P", bridge_name="B",
                 effective_span=-5000, girder_spacing=3000,
             )
 
     def test_rejects_span_over_max(self):
-        with pytest.raises(Exception):
+        with pytest.raises((ValueError, Exception)):
             PlateGirderInput(
                 project_name="P", bridge_name="B",
                 effective_span=200_000, girder_spacing=3000,

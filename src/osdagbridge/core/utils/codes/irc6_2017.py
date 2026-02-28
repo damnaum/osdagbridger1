@@ -12,8 +12,8 @@ Reference: IRC:6-2017, Annexure A
 """
 
 from dataclasses import dataclass
-from typing import List, Tuple, Dict
 from enum import Enum
+from typing import Dict, List, Tuple
 
 import numpy as np
 

@@ -1,5 +1,5 @@
 """Report generator specific to plate girder design output."""
-from typing import Dict, Any
+from typing import Any, Dict
 
 from ...reports.report_generator import generate_text_report
 

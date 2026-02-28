@@ -11,15 +11,15 @@ import pytest
 
 from osdagbridge.core.utils.codes.load_combinations import (
     LimitState,
-    PartialSafetyFactor,
     LoadCase,
-    get_uls_basic_factors,
-    get_uls_seismic_factors,
-    get_sls_rare_factors,
+    PartialSafetyFactor,
+    generate_all_combinations,
+    get_factors_for_limit_state,
     get_sls_frequent_factors,
     get_sls_quasi_permanent_factors,
-    get_factors_for_limit_state,
-    generate_all_combinations,
+    get_sls_rare_factors,
+    get_uls_basic_factors,
+    get_uls_seismic_factors,
 )
 
 

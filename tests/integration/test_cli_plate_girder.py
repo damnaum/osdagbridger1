@@ -86,5 +86,5 @@ class TestCLIVersion:
             capture_output=True, text=True, timeout=30,
         )
         assert result.returncode == 0
-        assert "0.1.0" in result.stdout
+        assert "0.2.0" in result.stdout
 

@@ -1,5 +1,6 @@
 """Shared test fixtures for OsdagBridge test suite."""
 import pytest
+
 from osdagbridge.core.bridge_types.plate_girder.dto import PlateGirderInput, SteelGrade
 
 

@@ -1,13 +1,13 @@
 """Vehicle load wrapper providing convenience functions."""
 from ..utils.codes.irc6_2017 import (
     VehicleLoad,
-    get_class_a_train,
-    get_class_b_train,
-    get_class_70r_wheeled,
-    get_class_70r_tracked,
     get_class_70r_bogie,
+    get_class_70r_tracked,
+    get_class_70r_wheeled,
+    get_class_a_train,
     get_class_aa_tracked,
     get_class_aa_wheeled,
+    get_class_b_train,
 )
 
 

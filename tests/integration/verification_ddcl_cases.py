@@ -5,13 +5,13 @@ for known benchmark cases.  Exact values are not compared because
 the engine uses simplified UDL-equivalent dead loads — we check that
 results fall within ±30 % of typical preliminary-design values.
 """
+from pathlib import Path
+
 import pytest
 import yaml
-from pathlib import Path
 
 from osdagbridge.core.bridge_types.plate_girder.designer import design_plate_girder
 from osdagbridge.core.bridge_types.plate_girder.dto import PlateGirderInput
-
 
 EXAMPLES_DIR = Path(__file__).resolve().parents[2] / "examples" / "plate_girder"
 

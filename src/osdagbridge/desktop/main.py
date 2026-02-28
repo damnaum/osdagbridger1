@@ -8,7 +8,7 @@ import sys
 def start():
     """Launch the desktop application."""
     try:
-        from PySide6.QtWidgets import QApplication, QMessageBox  # noqa: F401
+        from PySide6.QtWidgets import QApplication, QMessageBox
 
         _app = QApplication(sys.argv)
         msg = QMessageBox()

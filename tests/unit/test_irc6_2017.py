@@ -8,25 +8,26 @@ Tests verify:
 - Lane distribution and congestion factors
 """
 
-import pytest
 import math
 
+import pytest
+
 from osdagbridge.core.utils.codes.irc6_2017 import (
+    AxleLoad,
+    VehicleLoad,
+    VehicleType,
+    get_all_vehicle_types,
+    get_class_70r_bogie,
+    get_class_70r_tracked,
+    get_class_70r_wheeled,
     get_class_a_train,
-    get_class_b_train,
     get_class_aa_tracked,
     get_class_aa_wheeled,
-    get_class_70r_wheeled,
-    get_class_70r_tracked,
-    get_class_70r_bogie,
+    get_class_b_train,
+    get_congestion_factor,
     get_impact_factor,
     get_lane_distribution_factor,
-    get_congestion_factor,
-    get_all_vehicle_types,
     get_vehicle_loads,
-    VehicleType,
-    VehicleLoad,
-    AxleLoad,
 )
 
 

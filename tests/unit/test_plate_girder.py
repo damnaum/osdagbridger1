@@ -11,27 +11,28 @@ Tests verify IS 800:2007 calculations are correct for:
 - Complete design workflow
 """
 
-import pytest
 import math
 
+import pytest
+
 from osdagbridge.core.bridge_types.plate_girder.designer import (
-    calculate_epsilon,
-    initial_sizing,
-    calculate_section_properties,
-    classify_section,
-    calculate_moment_capacity,
-    calculate_shear_capacity,
-    check_deflection,
-    design_plate_girder,
     E_STEEL,
     GAMMA_M0,
     GAMMA_M1,
+    calculate_epsilon,
+    calculate_moment_capacity,
+    calculate_section_properties,
+    calculate_shear_capacity,
+    check_deflection,
+    classify_section,
+    design_plate_girder,
+    initial_sizing,
 )
 from osdagbridge.core.bridge_types.plate_girder.dto import (
+    BridgeSpanType,
     PlateGirderInput,
     PlateGirderSection,
     SteelGrade,
-    BridgeSpanType,
 )
 
 

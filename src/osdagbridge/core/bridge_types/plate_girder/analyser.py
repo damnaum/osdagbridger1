@@ -3,12 +3,12 @@
 Coordinates between load computation and solver to produce
 internal force diagrams (SFD, BMD) for design checks.
 """
-from typing import Dict, Any
+from typing import Any, Dict
 
-from .dto import PlateGirderInput
 from ...loads.moving_load import analyze_moving_load
-from ...utils.codes.irc6_2017 import get_impact_factor, VehicleType
 from ...loads.vehicle import get_vehicle_by_name
+from ...utils.codes.irc6_2017 import VehicleType, get_impact_factor
+from .dto import PlateGirderInput
 
 
 def analyze_plate_girder(input_data: PlateGirderInput) -> Dict[str, Any]:
