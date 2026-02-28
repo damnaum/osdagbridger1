@@ -1,4 +1,4 @@
-"""Integration tests for plate girder API (design_plate_girder end-to-end)."""
+"""End-to-end integration tests for ``design_plate_girder``."""
 import pytest
 
 from osdagbridge.core.bridge_types.plate_girder.designer import design_plate_girder

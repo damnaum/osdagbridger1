@@ -1,6 +1,6 @@
 # Contributing to OsdagBridge
 
-Thank you for your interest in contributing to OsdagBridge! This document provides guidelines and instructions for contributing.
+Thanks for wanting to help! Here's how to get going.
 
 ## Getting Started
 
@@ -27,9 +27,9 @@ This installs the package with all development dependencies (pytest, ruff, mypy)
 
 ### 4. Make Your Changes
 
-- Write clean, well-documented code with type hints
-- Follow existing code patterns and conventions
-- Keep line length ≤ 100 characters (enforced by ruff)
+- Write clear, typed, documented code
+- Stick to the patterns already in the codebase
+- Lines should be ≤ 100 characters (ruff will tell you if you slip)
 
 ### 5. Run Tests
 
@@ -44,7 +44,7 @@ pytest --cov=osdagbridge --cov-report=term-missing
 pytest tests/unit/test_designer.py -v
 ```
 
-All tests must pass before submitting a PR.
+Every test must pass before you open a PR.
 
 ### 6. Run Linting
 
@@ -54,18 +54,19 @@ ruff check src/ tests/
 
 Fix any issues reported by ruff before submitting.
 
-### 7. Submit a Pull Request
+### 7. Open a Pull Request
 
 - Push your branch to your fork
-- Open a PR against the `main` branch
-- Provide a clear description of your changes
-- Reference any related issues
+- Open a PR against `main`
+- Describe what you changed and why
+- Link relevant issues if any
 
 ## Code Standards
 
-### Engineering Formula References
+### Cite your clauses
 
-**All structural engineering formulas must reference the exact clause number** from the relevant Indian Standard. For example:
+**Every engineering formula must reference the exact clause** from the
+relevant standard. For example:
 
 ```python
 def calculate_shear_capacity(d, tw, fy):
@@ -75,16 +76,16 @@ def calculate_shear_capacity(d, tw, fy):
     return Vd
 ```
 
-### Applicable Codes
+### Applicable standards
 
 - **IS 800:2007** — General Construction in Steel (Limit State Method)
 - **IRC:6-2017** — Standard Specifications for Road Bridges, Section II: Loads and Load Combinations
 - **IRC:22-2015** — Standard Specifications for Road Bridges, Section VI: Composite Construction
 - **IRC:24-2010** — Standard Specifications for Road Bridges, Section V: Steel Road Bridges
 
-### Units Convention
+### Units
 
-All internal calculations use a consistent unit system:
+Everything internal runs in a single set of units:
 
 | Quantity    | Unit  |
 |-------------|-------|
@@ -95,9 +96,9 @@ All internal calculations use a consistent unit system:
 
 Conversion helpers are available in `osdagbridge.core.utils.units`.
 
-### Type Hints
+### Type hints
 
-All public functions must have type hints for parameters and return values:
+All public functions need type annotations:
 
 ```python
 def get_impact_factor(bridge_type: str, span_m: float, vehicle: VehicleType) -> float:
@@ -106,7 +107,9 @@ def get_impact_factor(bridge_type: str, span_m: float, vehicle: VehicleType) -> 
 
 ### Docstrings
 
-Use Google-style docstrings with `Args:` and `Returns:` sections:
+Keep them concise — a one-liner is fine for simple helpers.
+For anything non-trivial, a short paragraph plus `Args:` / `Returns:`
+is plenty:
 
 ```python
 def initial_sizing(span: float, moment: float) -> dict:
@@ -121,10 +124,10 @@ def initial_sizing(span: float, moment: float) -> dict:
     """
 ```
 
-## Adding a New Bridge Type
+## Adding a new bridge type
 
-1. Create a new package under `src/osdagbridge/core/bridge_types/<type_name>/`
-2. Implement the standard module set:
+1. Create `src/osdagbridge/core/bridge_types/<type_name>/`
+2. Write the standard set of modules:
    - `dto.py` — Input/output data transfer objects (use Pydantic)
    - `initial_sizing.py` — Preliminary sizing from empirical rules
    - `analyser.py` — Structural analysis orchestration
@@ -134,13 +137,13 @@ def initial_sizing(span: float, moment: float) -> dict:
 3. Add tests under `tests/unit/`
 4. Update `__init__.py` exports
 
-## Adding a New Code Module
+## Adding a new code module
 
-1. Create the module under `src/osdagbridge/core/utils/codes/`
+1. Drop a new file into `src/osdagbridge/core/utils/codes/`
 2. Register it in `registry.py`
-3. Export key functions from `codes/__init__.py`
-4. Add comprehensive tests
+3. Re-export key functions from `codes/__init__.py`
+4. Write thorough tests
 
 ## Questions?
 
-Open an issue on the repository for any questions about contributing.
+Open an issue — we're happy to help.

@@ -1,8 +1,6 @@
-"""Pier cap geometry calculations.
+"""Pier cap (bearing shelf) geometry.
 
-Pier caps (also called *bearing shelves*) distribute girder reactions
-to the pier shaft below.  They are typically rectangular or hammerhead
-shaped.
+Distributes girder reactions into the pier shaft.
 """
 
 from __future__ import annotations
@@ -12,13 +10,7 @@ from dataclasses import dataclass
 
 @dataclass
 class PierCapGeometry:
-    """Hammerhead-style RCC pier cap.
-
-    Attributes:
-        total_length: Full cap length transverse to traffic (mm).
-        width: Width along traffic direction (mm).
-        depth: Total depth at the pier centre (mm).
-    """
+    """Hammerhead-style RCC pier cap (mm)."""
 
     total_length: float = 10_000.0
     width: float = 1500.0

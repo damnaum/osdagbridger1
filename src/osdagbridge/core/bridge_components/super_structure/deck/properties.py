@@ -1,21 +1,10 @@
-"""Deck slab property calculations.
-
-Provides geometry and material properties for RCC bridge deck slabs
-shared across bridge types.
-"""
+"""RCC deck-slab properties used in dead-load and composite calculations."""
 from dataclasses import dataclass
 
 
 @dataclass
 class DeckSlab:
-    """RCC deck slab parameters.
-
-    Attributes:
-        thickness: Slab thickness in mm (typical 200–250 mm).
-        width: Tributary width per girder in mm.
-        concrete_grade: e.g. "M30", "M35".
-        density: Concrete density in kN/m³ (default 25.0).
-    """
+    """Deck slab — typical thickness 200–250 mm."""
     thickness: float
     width: float
     concrete_grade: str = "M30"

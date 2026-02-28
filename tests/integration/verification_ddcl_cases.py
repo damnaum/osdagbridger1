@@ -1,9 +1,7 @@
-"""Verification cases based on DDCL reference designs.
+"""Benchmark verification against reference designs.
 
-These tests ensure the OsdagBridge results are within expected ranges
-for known benchmark cases.  Exact values are not compared because
-the engine uses simplified UDL-equivalent dead loads — we check that
-results fall within ±30 % of typical preliminary-design values.
+We don't chase exact numbers because dead loads are UDL-simplified;
+instead we check results land within ±30 % of typical prelim-design values.
 """
 from pathlib import Path
 

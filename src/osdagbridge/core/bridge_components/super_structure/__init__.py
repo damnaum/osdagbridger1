@@ -1,1 +1,1 @@
-"""Super-structure bridge components (girder, deck, crash barrier)."""
+"""Super-structure components (girder, deck slab, crash barrier)."""

@@ -1,15 +1,13 @@
 # OsdagBridge Architecture
 
-> **Status**: Alpha (v0.1.x) — plate girder workflow is functional; box girder
-> and truss are stubs.
+> **Status**: Alpha (v0.2.x) — plate girder is working; box girder
+> and truss are stubs waiting for implementation.
 
 ## Overview
 
-OsdagBridge is a shared-core software system for the analysis and design of
-steel bridges following Indian Standards (IS 800:2007, IRC:6-2017,
-IRC:22-2015, IRC:24-2010).  The architecture separates structural engineering
-logic from presentation, allowing CLI, Desktop (PySide6), and Web
-(Django + React) interfaces to reuse the same core.
+OsdagBridge keeps all the engineering maths in one shared core so that
+three different front-ends (CLI, desktop PySide6, web Django + React)
+can call into the same design functions without duplicating logic.
 
 ```
 ┌─────────────┐  ┌─────────────┐  ┌─────────────┐

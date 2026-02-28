@@ -1,14 +1,12 @@
 """
-IRC:6-2017 Vehicle Loading Module
-Standard Specifications for Road Bridges - Section II (Loads)
+IRC:6-2017 vehicle loads (Section II — Loads & Stresses).
 
-This module provides vehicle load definitions for bridge design including:
-- Class A Loading (Standard two-lane loading)
-- Class B Loading (Single lane loading)
-- Class AA Loading (Heavy loading - Tracked/Wheeled)
-- Class 70R Loading (Special heavy vehicle)
+Defines the standard truck/train configurations that Indian highway
+bridges are designed for: Class A, Class B, Class AA (tracked/wheeled)
+and the heavy Class 70R series.
 
-Reference: IRC:6-2017, Annexure A
+Axle spacings and weights are straight out of the IRC blue book,
+Annexure A.  Impact factors from Clause 211.
 """
 
 from dataclasses import dataclass
@@ -19,7 +17,7 @@ import numpy as np
 
 
 class VehicleType(Enum):
-    """IRC vehicle classification types."""
+    """IRC vehicle classes."""
     CLASS_A = "class_a"
     CLASS_B = "class_b"
     CLASS_AA_TRACKED = "class_aa_tracked"
@@ -31,56 +29,42 @@ class VehicleType(Enum):
 
 @dataclass
 class AxleLoad:
-    """Single axle load definition."""
-    load: float  # kN
-    position: float  # m from front of vehicle
-    contact_width: float = 0.25  # m (tire contact width)
-    contact_length: float = 0.50  # m (along traffic direction)
+    """One axle: load (kN), position from vehicle front (m)."""
+    load: float
+    position: float
+    contact_width: float = 0.25    # tyre contact patch (m)
+    contact_length: float = 0.50
 
 
 @dataclass
 class VehicleLoad:
-    """Complete vehicle load configuration."""
+    """Full vehicle configuration with all axles."""
     vehicle_type: VehicleType
     axles: List[AxleLoad]
-    total_length: float  # m
-    min_spacing_same_lane: float  # m (between successive vehicles)
-    ground_contact_area: Tuple[float, float] = (0.25, 0.50)  # width x length in m
+    total_length: float                               # m
+    min_spacing_same_lane: float                      # m
+    ground_contact_area: Tuple[float, float] = (0.25, 0.50)  # w × l  (m)
 
     @property
     def total_load(self) -> float:
-        """Total vehicle weight in kN."""
-        return sum(axle.load for axle in self.axles)
+        """Sum of all axle loads (kN)."""
+        return sum(a.load for a in self.axles)
 
     @property
     def axle_positions(self) -> np.ndarray:
-        """Array of axle positions from vehicle front."""
-        return np.array([axle.position for axle in self.axles])
+        return np.array([a.position for a in self.axles])
 
     @property
     def axle_loads(self) -> np.ndarray:
-        """Array of axle loads in kN."""
-        return np.array([axle.load for axle in self.axles])
+        return np.array([a.load for a in self.axles])
 
 
 def get_class_a_train() -> VehicleLoad:
-    """
-    IRC Class A loading train configuration.
+    """IRC Class A loading train.
 
-    Standard two-lane bridge loading for highways and permanent bridges.
-    Total train length: approximately 20.3m
-
-    Axle arrangement (from front):
-    - 2 front axles: 27 kN each, spaced 1.1m apart
-    - Gap of 3.2m
-    - 2 middle axles: 114 kN each, spaced 1.2m apart
-    - Gap of 4.3m
-    - 4 rear axles: 68 kN each, spaced 3.0m apart
-
-    Returns:
-        VehicleLoad object for Class A train
-
-    Reference: IRC:6-2017, Annexure A, Fig. 1
+    Standard two-lane highway loading — 8 axles spread over ~20 m:
+      2 × 27 kN (front), 2 × 114 kN (tandem), 4 × 68 kN (rear bogie).
+    Ref: IRC:6-2017, Annexure A, Fig. 1.
     """
     axles = [
         # Front axle group (27 kN each)
@@ -105,23 +89,10 @@ def get_class_a_train() -> VehicleLoad:
 
 
 def get_class_b_train() -> VehicleLoad:
-    """
-    IRC Class B loading train configuration.
+    """IRC Class B train — lighter loading for minor roads.
 
-    Lighter loading for minor roads and temporary bridges.
-    Same axle arrangement as Class A but with lighter axle weights.
-
-    Axle arrangement (from front):
-    - 2 front axles: 16 kN each, spaced 1.1m apart
-    - Gap of 3.2m
-    - 2 middle axles: 68 kN each, spaced 1.2m apart
-    - Gap of 4.3m
-    - 4 rear axles: 41 kN each, spaced 3.0m apart
-
-    Returns:
-        VehicleLoad object for Class B train
-
-    Reference: IRC:6-2017, Annexure A, Fig. 2
+    Same axle layout as Class A but scaled-down weights.
+    Ref: IRC:6-2017, Annexure A, Fig. 2.
     """
     axles = [
         # Front axle group (16 kN each)
@@ -146,19 +117,15 @@ def get_class_b_train() -> VehicleLoad:
 
 
 def get_class_aa_tracked() -> VehicleLoad:
-    """
-    IRC Class AA Tracked vehicle (tank-type loading).
+    """Class AA tracked (tank-type), 700 kN over two 3.6 m pads.
 
-    Two track pads, each 3.6m long x 0.85m wide.
-    Total load: 700 kN distributed over two tracks.
-    Used for bridges on National Highways and State Highways.
-
-    Reference: IRC:6-2017, Annexure A, Fig. 3
+    Modelled as 5 equivalent point loads per pad for analysis.
+    Ref: IRC:6-2017, Annexure A, Fig. 3.
     """
-    # Tracked vehicles modeled as distributed load over track length
-    # Represented as equivalent concentrated loads for analysis
-    track_load = 350.0  # kN per track (total 700 kN)
-    track_length = 3.6  # m
+    # tracked vehicle — distributed over track length;
+    # split into 5 point loads for the IL sweep
+    track_load = 350.0   # kN per track (700 kN total)
+    track_length = 3.6   # m
 
     # Model as 5 equivalent point loads per track
     num_points = 5
@@ -179,13 +146,9 @@ def get_class_aa_tracked() -> VehicleLoad:
 
 
 def get_class_aa_wheeled() -> VehicleLoad:
-    """
-    IRC Class AA Wheeled vehicle loading.
+    """Class AA wheeled, 400 kN on 4 axles.
 
-    Heavy wheeled vehicle with total load 400 kN.
-    4 axles with varying loads.
-
-    Reference: IRC:6-2017, Annexure A, Fig. 3A
+    Ref: IRC:6-2017, Annexure A, Fig. 3A.
     """
     axles = [
         AxleLoad(load=62.5, position=0.0),
@@ -204,33 +167,20 @@ def get_class_aa_wheeled() -> VehicleLoad:
 
 
 def get_class_70r_wheeled() -> VehicleLoad:
+    """Class 70R wheeled — the big one for NH bridges.
+
+    7 axles, ~1010 kN total: 2 steering (80 kN ea.) + 5 bogie (170 kN ea.).
+    Ref: IRC:6-2017, Annexure A, Fig. 5.
     """
-    IRC Class 70R Wheeled vehicle configuration.
-
-    Heavy vehicle loading for National Highways and important bridges.
-    7-axle configuration with total load ~1000 kN.
-
-    Axle arrangement (from front):
-    - 2 steering axles: 80 kN each, spaced 1.37m
-    - Gap of 4.57m to bogie
-    - 5 bogie axles: 170 kN each (approx), spaced 1.37m each
-
-    Returns:
-        VehicleLoad object for 70R wheeled vehicle
-
-    Reference: IRC:6-2017, Annexure A, Fig. 5
-    """
-    # Steering axles (front)
-    front_axle_load = 80.0  # kN each
-
-    # Bogie axle loads (rear) - distributed ~170 kN per axle
-    bogie_axle_load = 170.0  # kN each
+    # steering + bogie
+    front_axle_load = 80.0     # kN
+    bogie_axle_load = 170.0    # kN
 
     axles = [
-        # Steering axles
+        # steering
         AxleLoad(load=front_axle_load, position=0.0),
         AxleLoad(load=front_axle_load, position=1.37),
-        # Bogie axles (5 nos)
+        # bogie (5 nos)
         AxleLoad(load=bogie_axle_load, position=1.37 + 4.57),
         AxleLoad(load=bogie_axle_load, position=1.37 + 4.57 + 1.37),
         AxleLoad(load=bogie_axle_load, position=1.37 + 4.57 + 2.74),
@@ -242,25 +192,20 @@ def get_class_70r_wheeled() -> VehicleLoad:
         vehicle_type=VehicleType.CLASS_70R_WHEELED,
         axles=axles,
         total_length=15.22,
-        min_spacing_same_lane=30.0,  # 30m min between 70R vehicles
-        ground_contact_area=(0.86, 0.263),  # Different contact for heavy vehicle
+        min_spacing_same_lane=30.0,
+        ground_contact_area=(0.86, 0.263),
     )
 
 
 def get_class_70r_tracked() -> VehicleLoad:
+    """Class 70R tracked, 700 kN on 4.57 m pads.
+
+    Ref: IRC:6-2017, Annexure A, Fig. 4.
     """
-    IRC Class 70R Tracked vehicle (tank-type loading).
+    track_load = 350.0    # kN per track
+    track_length = 4.57   # m
 
-    Two track pads, each 4.57m long x 0.85m wide.
-    Total load: 700 kN distributed over two tracks.
-
-    Reference: IRC:6-2017, Annexure A, Fig. 4
-    """
-    # Tracked vehicles modeled as distributed load over track length
-    track_load = 350.0  # kN per track
-    track_length = 4.57  # m
-
-    # Model as 5 equivalent point loads per track
+    # 5 equivalent point loads per track
     num_points = 5
     point_spacing = track_length / (num_points - 1)
     point_load = track_load / num_points
@@ -279,13 +224,9 @@ def get_class_70r_tracked() -> VehicleLoad:
 
 
 def get_class_70r_bogie() -> VehicleLoad:
-    """
-    IRC Class 70R Bogie loading.
+    """Class 70R bogie — two 200 kN axles, 1.22 m apart.
 
-    Two axles, each 200 kN, spaced 1.22m apart.
-    Total load: 400 kN on bogie.
-
-    Reference: IRC:6-2017, Annexure A, Fig. 6
+    Ref: IRC:6-2017, Annexure A, Fig. 6.
     """
     axles = [
         AxleLoad(load=200.0, position=0.0, contact_width=0.38, contact_length=0.15),
@@ -302,39 +243,23 @@ def get_class_70r_bogie() -> VehicleLoad:
 
 
 def get_impact_factor(bridge_type: str, span: float, vehicle_type: VehicleType) -> float:
+    """Impact (dynamic amplification) per IRC:6-2017, Cl. 211.2.
+
+    Returns the multiplier (e.g. 1.25 → 25 % increase).
+    Steel bridges get a bigger hit than concrete because they're
+    lighter and more flexible.
     """
-    Calculate impact factor (dynamic amplification) as per IRC:6-2017.
-
-    The impact factor accounts for dynamic effects of moving vehicles.
-    Applied as a multiplier on live load, e.g., 1.25 means 25% increase.
-
-    Args:
-        bridge_type: "steel", "concrete", or "composite"
-        span: Effective span in meters
-        vehicle_type: Type of vehicle loading
-
-    Returns:
-        Impact factor (multiplier, e.g., 1.25 means 25% increase)
-
-    Reference: IRC:6-2017, Clause 211.2
-
-    Example:
-        >>> get_impact_factor("steel", 10.0, VehicleType.CLASS_A)
-        1.383  # approximately
-    """
-    # For Class A and Class B loading
+    # Class A / B — formula-based
     if vehicle_type in (VehicleType.CLASS_A, VehicleType.CLASS_B):
         if bridge_type == "steel":
-            # I = 9 / (13.5 + L) for steel bridges
-            impact = 9.0 / (13.5 + span)
+            impact = 9.0 / (13.5 + span)             # I = 9 / (13.5 + L)
         elif bridge_type == "concrete":
-            # I = 4.5 / (6 + L) for RCC bridges
-            impact = 4.5 / (6.0 + span)
-        else:  # composite
-            # Use average of steel and concrete formulas
+            impact = 4.5 / (6.0 + span)              # I = 4.5 / (6 + L)
+        else:
+            # composite — use average of steel & concrete
             impact = (9.0 / (13.5 + span) + 4.5 / (6.0 + span)) / 2
 
-    # For Class AA and 70R loading
+    # Class AA / 70R
     elif vehicle_type in (
         VehicleType.CLASS_70R_WHEELED,
         VehicleType.CLASS_70R_TRACKED,
@@ -343,13 +268,12 @@ def get_impact_factor(bridge_type: str, span: float, vehicle_type: VehicleType) 
         VehicleType.CLASS_AA_TRACKED,
     ):
         if span <= 9.0:
-            # For spans up to 9m
             if vehicle_type in (VehicleType.CLASS_70R_TRACKED, VehicleType.CLASS_AA_TRACKED):
-                impact = 0.25  # 25% for tracked vehicles
+                impact = 0.25
             else:
-                impact = 0.25  # 25% for wheeled vehicles <= 9m
+                impact = 0.25
         else:
-            # For spans > 9m, linearly reduce to 10% at 45m
+            # linear reduction: 25% at 9 m → 10% at 45 m
             if vehicle_type in (VehicleType.CLASS_70R_TRACKED, VehicleType.CLASS_AA_TRACKED):
                 # Tracked: 25% at 9m, reducing to 10% at 45m+
                 impact = max(0.10, 0.25 - (span - 9.0) * (0.15 / 36.0))
@@ -358,26 +282,17 @@ def get_impact_factor(bridge_type: str, span: float, vehicle_type: VehicleType) 
                 impact = max(0.10, 0.25 - (span - 9.0) * (0.15 / 36.0))
 
     else:
-        impact = 0.20  # Default 20% for unspecified types
+        impact = 0.20  # fallback
 
-    # Impact factor should not be less than 10%
+    # never below 10 %
     return 1.0 + max(impact, 0.10)
 
 
 def get_lane_distribution_factor(num_lanes: int) -> float:
-    """
-    Get lane reduction factor for multi-lane loading.
+    """Multi-lane reduction (IRC:6-2017 Cl. 208.3).
 
-    When multiple lanes are loaded simultaneously, a reduction
-    factor applies since full loading on all lanes is unlikely.
-
-    Args:
-        num_lanes: Number of lanes loaded
-
-    Returns:
-        Reduction factor (multiplier)
-
-    Reference: IRC:6-2017, Clause 208.3
+    Full loading on all lanes simultaneously is unlikely; the
+    code allows a reduction for 3+ lanes.
     """
     lane_factors = {
         1: 1.0,
@@ -390,19 +305,9 @@ def get_lane_distribution_factor(num_lanes: int) -> float:
 
 
 def get_congestion_factor(span: float) -> float:
-    """
-    Get congestion factor for long-span bridges.
+    """Congestion surcharge for long-span bridges (IRC:6 Cl. 209).
 
-    For spans greater than certain limits, increase in live load
-    due to traffic congestion should be considered.
-
-    Args:
-        span: Effective span in meters
-
-    Returns:
-        Congestion factor (>=1.0)
-
-    Reference: IRC:6-2017, Clause 209
+    1.0 up to 10 m, linearly increasing to 1.15 at 40 m.
     """
     if span <= 10.0:
         return 1.0
@@ -413,9 +318,8 @@ def get_congestion_factor(span: float) -> float:
         return 1.15
 
 
-# Convenience function to get all standard vehicles
 def get_all_vehicle_types() -> Dict[str, VehicleLoad]:
-    """Return dictionary of all IRC vehicle configurations."""
+    """All IRC vehicle configs as a dict."""
     return {
         "class_a": get_class_a_train(),
         "class_b": get_class_b_train(),
@@ -427,7 +331,6 @@ def get_all_vehicle_types() -> Dict[str, VehicleLoad]:
     }
 
 
-# Keep backward-compatible alias
 def get_vehicle_loads() -> list:
-    """Legacy function returning list of all vehicle configurations."""
+    """Compat shim — returns list of all vehicle configs."""
     return list(get_all_vehicle_types().values())

@@ -1,8 +1,7 @@
-"""Registry for looking up Indian design code modules by name.
+"""Design-code registry.
 
-All code modules are automatically registered when this module is first
-imported.  Use :func:`get_code` to retrieve a module by its standard
-designation (e.g., 'IRC:6-2017').
+All Indian code modules are auto-registered on first import.
+Call ``get_code('IRC:6-2017')`` to grab one.
 """
 
 from __future__ import annotations

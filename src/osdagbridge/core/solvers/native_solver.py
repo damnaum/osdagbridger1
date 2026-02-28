@@ -1,8 +1,8 @@
-"""Native lightweight beam solver for simply supported spans.
+"""Lightweight beam solver for simply-supported spans.
 
-Implements equilibrium-based shear/moment and numerical double-integration
-for deflection.  Sufficient for preliminary design — use OpenSees or
-OspGrillage for detailed analysis.
+Equilibrium-based SF/BM with a trapezoidal double-integration for
+deflection.  Fine for preliminary design; swap in OpenSees or
+ospgrillage for anything more involved.
 """
 
 from __future__ import annotations

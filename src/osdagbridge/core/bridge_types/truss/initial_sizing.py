@@ -1,4 +1,4 @@
-"""Truss bridge initial sizing (stub)."""
+"""Truss preliminary sizing — not yet wired up."""
 
 from ...exceptions import OsdagError
 

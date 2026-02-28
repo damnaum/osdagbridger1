@@ -1,4 +1,4 @@
-"""Truss structural analysis orchestrator (stub)."""
+"""Truss analysis — not yet wired up."""
 
 from ...exceptions import OsdagError
 

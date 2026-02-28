@@ -1,16 +1,12 @@
-"""Adapter for OpenSeesPy structural analysis engine.
+"""OpenSeesPy adapter (optional dependency).
 
-Wraps OpenSeesPy calls to provide a consistent interface
-for bridge analysis. Requires `pip install openseespy`.
+Wraps openseespy so the rest of the codebase doesn't have to
+care whether it's installed or not.
 """
 
 
 class OpenSeesAdapter:
-    """Adapter to run bridge analysis using OpenSeesPy.
-
-    Provides methods to build a grillage or frame model,
-    apply loads, and extract results.
-    """
+    """Thin wrapper around OpenSeesPy for bridge beam/grillage models."""
 
     def __init__(self):
         self._available = False

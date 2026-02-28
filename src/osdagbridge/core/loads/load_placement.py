@@ -1,11 +1,8 @@
-"""Load placement utilities for multi-lane bridge analysis.
+"""Transverse load distribution — Courbon's theory.
 
-Determines transverse placement of vehicles on the bridge deck
-and calculates the distribution to individual girders using
-Courbon's method (rigid deck assumption).
-
-Reference:
-    Courbon's theory for transverse load distribution in beam bridges.
+Figures out how much load each girder picks up when vehicles
+are placed at various eccentricities on the deck.  Assumes
+the slab is rigid enough to qualify as a Courbon's distribution.
 """
 
 from __future__ import annotations
@@ -16,13 +13,10 @@ from typing import List
 
 @dataclass
 class LanePlacement:
-    """Transverse position of a vehicle lane on the bridge deck.
+    """One loaded lane's transverse position on the deck.
 
-    Attributes:
-        lane_number: Lane index (1-based).
-        eccentricity: Distance from bridge deck centroid (mm).
-            Positive = towards right looking in traffic direction.
-        vehicle_type: IRC vehicle designation ('CLASS_A', 'CLASS_70R', etc.).
+    ``eccentricity`` is measured from the deck centreline (mm);
+    positive = right-hand side looking in the direction of traffic.
     """
 
     lane_number: int
@@ -35,31 +29,14 @@ def calculate_girder_distribution(
     num_girders: int,
     lane_placements: List[LanePlacement],
 ) -> List[float]:
-    """Calculate distribution factors for each girder using Courbon's method.
+    """Courbon's reaction-distribution factors for each girder.
 
-    Courbon's method assumes a rigid deck and gives the reaction on each
-    girder *i* as:
+    For *n* girders at spacing *s*, the method treats the deck as
+    perfectly rigid and distributes the total unit reaction by:
 
-        R_i = (P / n) * [1 + (n * Σe_j * x_i) / (P * Σx_k²)]
+        R_i = (P / n) [1 + n · Σe_j · x_i / (P · Σx_k²)]
 
-    where
-        P  = total number of unit loads (= number of lanes loaded),
-        n  = number of girders,
-        e_j = eccentricity of lane *j*,
-        x_i = position of girder *i* from deck centroid,
-        Σx_k² = sum of squared girder positions.
-
-    Args:
-        girder_spacing: C/c spacing of girders in mm.
-        num_girders: Number of main girders.
-        lane_placements: List of lane eccentricities.
-
-    Returns:
-        List of distribution factors for each girder.  The sum of all
-        factors equals the number of lanes loaded.
-
-    Raises:
-        ValueError: If *num_girders* < 1 or *girder_spacing* <= 0.
+    Returned factors sum to the number of loaded lanes.
     """
     if num_girders < 1:
         raise ValueError("num_girders must be >= 1")

@@ -1,13 +1,9 @@
 """
-Load Combinations as per IRC:6-2017 and IS 800:2007
+Load combinations — IRC:6-2017 / IS 800:2007.
 
-Implements limit state design load combinations for bridge structures.
-Both Ultimate Limit State (ULS) and Serviceability Limit State (SLS)
-combinations are covered with appropriate partial safety factors.
-
-Reference:
-    - IRC:6-2017, Table 1 to Table 6
-    - IS 800:2007, Table 4
+Six limit-state combinations are defined: three ULS (basic, seismic,
+accidental) and three SLS (rare, frequent, quasi-permanent). Each
+carries its own set of γ partial-safety factors from the code tables.
 """
 
 from dataclasses import dataclass
@@ -16,23 +12,21 @@ from typing import Dict
 
 
 class LimitState(Enum):
-    """Limit state types for bridge design."""
-    ULS_BASIC = "uls_basic"                     # Ultimate limit state - Basic combination
-    ULS_SEISMIC = "uls_seismic"                 # ULS with seismic
-    ULS_ACCIDENTAL = "uls_accidental"           # ULS with accidental loads
-    SLS_RARE = "sls_rare"                       # Serviceability - rare combination
-    SLS_FREQUENT = "sls_frequent"               # Serviceability - frequent
-    SLS_QUASI_PERMANENT = "sls_quasi_permanent"  # Quasi-permanent
+    """Recognised limit-state types."""
+    ULS_BASIC = "uls_basic"
+    ULS_SEISMIC = "uls_seismic"
+    ULS_ACCIDENTAL = "uls_accidental"
+    SLS_RARE = "sls_rare"
+    SLS_FREQUENT = "sls_frequent"
+    SLS_QUASI_PERMANENT = "sls_quasi_permanent"
 
 
 @dataclass
 class PartialSafetyFactor:
-    """
-    Partial safety factors for different load types.
+    """γ_f values for each load type.
 
-    γ_f values applied to characteristic loads to get design loads.
-    ULS factors are typically > 1.0 (amplification).
-    SLS factors are typically 1.0 (service-level check).
+    ULS factors are typically > 1 (amplification);
+    SLS factors are mostly 1.0.
     """
     dead_load_favourable: float = 1.0
     dead_load_unfavourable: float = 1.35
@@ -46,17 +40,7 @@ class PartialSafetyFactor:
     centrifugal_force: float = 1.50
 
     def get_factored_load(self, load_type: str, characteristic_load: float) -> float:
-        """
-        Apply partial safety factor to a characteristic load.
-
-        Args:
-            load_type: One of 'dead', 'superimposed', 'live', 'wind',
-                       'temperature', 'seismic', 'earth', 'braking', 'centrifugal'
-            characteristic_load: Unfactored characteristic load value
-
-        Returns:
-            Factored design load
-        """
+        """Apply the relevant γ to a characteristic load."""
         factor_map = {
             "dead_favourable": self.dead_load_favourable,
             "dead_unfavourable": self.dead_load_unfavourable,

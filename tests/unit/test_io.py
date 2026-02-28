@@ -1,7 +1,7 @@
-"""Unit tests for YAML I/O and DTO validation.
+"""YAML I/O and DTO validation tests.
 
-Tests that PlateGirderInput correctly validates inputs
-and that YAML round-tripping works.
+Checks that PlateGirderInput validates sensibly and that
+YAML round-tripping doesn't lose anything.
 """
 from pathlib import Path
 

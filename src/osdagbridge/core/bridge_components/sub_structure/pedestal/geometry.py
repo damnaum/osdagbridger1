@@ -1,8 +1,4 @@
-"""Pedestal geometry calculations.
-
-Pedestals sit between bearing plates and the pier cap and transfer
-concentrated girder reactions into the pier cap.
-"""
+"""Pedestal geometry — the small block between bearing and pier cap."""
 
 from __future__ import annotations
 
@@ -11,13 +7,7 @@ from dataclasses import dataclass
 
 @dataclass
 class PedestalGeometry:
-    """Rectangular RCC pedestal.
-
-    Attributes:
-        length: Along traffic direction (mm).
-        width: Transverse to traffic (mm).
-        height: Pedestal height (mm).
-    """
+    """Rectangular RCC pedestal (mm)."""
 
     length: float = 600.0
     width: float = 600.0

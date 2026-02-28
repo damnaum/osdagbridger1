@@ -1,8 +1,4 @@
-"""Parametric I-girder geometry builder.
-
-Provides a convenience factory for creating ``IGirderGeometry``
-objects from minimal parameters.
-"""
+"""Quick factory for doubly-symmetric I-girders."""
 
 from __future__ import annotations
 
@@ -15,17 +11,7 @@ def make_symmetric_girder(
     flange_width: float,
     flange_thickness: float,
 ) -> IGirderGeometry:
-    """Create a doubly-symmetric I-girder.
-
-    Args:
-        web_depth: Clear web depth (mm).
-        web_thickness: Web plate thickness (mm).
-        flange_width: Flange width (mm) — same top & bottom.
-        flange_thickness: Flange thickness (mm) — same top & bottom.
-
-    Returns:
-        IGirderGeometry instance.
-    """
+    """Build an IGirderGeometry with equal top/bottom flanges."""
     return IGirderGeometry(
         web_depth=web_depth,
         web_thickness=web_thickness,

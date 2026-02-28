@@ -1,7 +1,6 @@
-"""CAD geometry generator for plate girder bridges.
+"""2-D cross-section outline for plate-girder visualisation.
 
-Generates 2D cross-section coordinates for visualization.
-Full 3D CAD (PythonOCC) requires the 'cad' optional dependency.
+Full 3-D output via PythonOCC needs the ``cad`` extra.
 """
 from typing import List, Tuple
 
@@ -11,14 +10,7 @@ from .dto import PlateGirderSection
 def generate_cross_section_coords(
     section: PlateGirderSection,
 ) -> List[Tuple[float, float]]:
-    """Generate 2D coordinates for plate girder cross-section outline.
-
-    Args:
-        section: PlateGirderSection with dimensions
-
-    Returns:
-        List of (x, y) coordinates forming closed polygon (mm)
-    """
+    """Closed polygon (x, y) for the I-section outline (mm)."""
     hw = section.web_depth
     tw = section.web_thickness
     bf_top = section.top_flange_width

@@ -1,4 +1,4 @@
-"""Loads package for bridge analysis."""
+"""Bridge loading utilities (moving loads, influence lines)."""
 from .moving_load import (
     InfluenceLine,
     analyze_moving_load,

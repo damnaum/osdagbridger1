@@ -1,11 +1,8 @@
 """
-Unit tests for moving load analysis module.
+Moving-load analysis tests.
 
-Tests verify:
-- Influence line generation (moment and shear)
-- Load effect calculation from IL
-- Critical vehicle position finding
-- Complete moving load analysis results
+Influence lines, load effects, critical positions,
+and the full ``analyze_moving_load`` pipeline.
 """
 
 import math

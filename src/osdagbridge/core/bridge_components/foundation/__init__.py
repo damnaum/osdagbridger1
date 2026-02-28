@@ -1,1 +1,1 @@
-"""Foundation package."""
+"""Foundation components (piles, pile caps)."""

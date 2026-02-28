@@ -1,21 +1,11 @@
-"""Pile geometry calculations.
-
-Supports circular bored cast-in-situ piles (most common for
-highway bridge foundations in India).
-"""
+"""Bored cast-in-situ pile geometry."""
 import math
 from dataclasses import dataclass
 
 
 @dataclass
 class PileGeometry:
-    """Single pile geometry.
-
-    Attributes:
-        diameter: Pile diameter (mm).
-        length: Total pile length (mm).
-        embedment_depth: Depth below ground level (mm).
-    """
+    """Single circular pile (mm)."""
     diameter: float = 1200.0
     length: float = 20_000.0
     embedment_depth: float = 18_000.0

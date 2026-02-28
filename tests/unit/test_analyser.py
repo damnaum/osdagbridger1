@@ -1,4 +1,4 @@
-"""Unit tests for plate girder analyser module."""
+"""Tests for the plate-girder analysis orchestrator."""
 import pytest
 
 from osdagbridge.core.bridge_types.plate_girder.analyser import analyze_plate_girder

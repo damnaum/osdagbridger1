@@ -1,7 +1,6 @@
-"""Box Girder Bridge Data Transfer Object (stub).
+"""Box-girder input model (placeholder).
 
-Placeholder for a Pydantic model analogous to
-``plate_girder.dto.PlateGirderInput``.
+Mirrors the pattern of ``plate_girder.dto.PlateGirderInput``.
 """
 
 from __future__ import annotations
@@ -12,10 +11,7 @@ from pydantic import BaseModel, Field
 
 
 class BoxGirderInput(BaseModel):
-    """Input parameters for box girder bridge design (stub).
-
-    All dimensions in mm, loads in kN unless specified.
-    """
+    """Box-girder input — all mm / kN unless noted."""
 
     project_name: str = Field(..., min_length=1, max_length=200)
     bridge_name: str = Field(..., min_length=1, max_length=100)

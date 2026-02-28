@@ -1,6 +1,3 @@
-"""Truss Bridge Design Module (stub).
-
-Planned for v0.2. Shares the same interface as ``plate_girder``.
-"""
+"""Truss bridge design — not yet implemented; on the roadmap for v0.3."""
 
 IMPLEMENTED = False

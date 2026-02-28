@@ -1,7 +1,7 @@
-"""Plate girder structural analysis orchestrator.
+"""Analysis orchestrator for plate-girder bridges.
 
-Coordinates between load computation and solver to produce
-internal force diagrams (SFD, BMD) for design checks.
+Pulls together vehicle loads, impact factors, and the moving-load
+solver to produce the BM/SF envelopes the designer needs.
 """
 from typing import Any, Dict
 
@@ -12,19 +12,10 @@ from .dto import PlateGirderInput
 
 
 def analyze_plate_girder(input_data: PlateGirderInput) -> Dict[str, Any]:
-    """Run full analysis for a plate girder bridge.
+    """Full moving-load analysis for a simply-supported plate girder.
 
-    Steps:
-    1. Get vehicle load from input specification
-    2. Calculate impact factor based on span and bridge type
-    3. Run moving load analysis for max BM and SF
-    4. Return envelope of results
-
-    Args:
-        input_data: PlateGirderInput with geometry and loading
-
-    Returns:
-        Dictionary with analysis results including max_moment, max_shear, etc.
+    Returns a dict with ``max_moment``, ``max_shear``, ``impact_factor``,
+    etc. — everything the designer picks up downstream.
     """
     span_m = input_data.effective_span / 1000  # mm to m
 

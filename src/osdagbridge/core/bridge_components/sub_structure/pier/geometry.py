@@ -1,8 +1,4 @@
-"""Pier geometry calculations.
-
-Supports rectangular and circular pier cross-sections with height,
-breadth / diameter, and cap-level offsets.
-"""
+"""Pier shaft geometry — rectangular or circular options."""
 import math
 from dataclasses import dataclass
 from typing import Literal
@@ -10,14 +6,7 @@ from typing import Literal
 
 @dataclass
 class PierGeometry:
-    """Geometry of a single bridge pier.
-
-    Attributes:
-        shape: "rectangular" or "circular".
-        height: Clear height of pier (mm).
-        breadth: Breadth (mm, for rectangular) or diameter (mm, for circular).
-        depth: Depth along traffic direction (mm, rectangular only).
-    """
+    """Single pier — rectangular or circular."""
     shape: Literal["rectangular", "circular"] = "rectangular"
     height: float = 5000.0
     breadth: float = 1500.0

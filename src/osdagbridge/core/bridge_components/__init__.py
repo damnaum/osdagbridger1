@@ -1,7 +1,5 @@
-"""Reusable bridge structural components.
+"""Reusable bridge components.
 
-Sub-packages:
-    ``foundation``       — Piles & pile caps.
-    ``sub_structure``     — Piers, pedestals, pier caps.
-    ``super_structure``   — Girders, deck slabs, crash barriers.
+Organised by where they sit in the structure:
+``foundation``, ``sub_structure``, ``super_structure``.
 """

@@ -1,14 +1,8 @@
 """
-Unit tests for plate girder design module.
+Plate-girder design unit tests.
 
-Tests verify IS 800:2007 calculations are correct for:
-- Epsilon factor calculation
-- Section classification
-- Section property calculations
-- Moment capacity (section and LTB)
-- Shear capacity (plastic and post-critical)
-- Deflection check
-- Complete design workflow
+Covers IS 800:2007 calculations: epsilon, classification,
+moment/shear capacity, deflection, and the end-to-end workflow.
 """
 
 import math

@@ -1,7 +1,7 @@
 # User Guide
 
-> **Alpha Release** — Only the plate girder workflow is fully functional.
-> Box girder and truss modules are stubs.
+> **Alpha** — Only the plate-girder workflow is complete.
+> Box girder and truss stubs exist but don't do real design yet.
 
 ## Installation
 
@@ -128,10 +128,9 @@ input:
 | CLASS_70R | Heavy loading (NH / expressway) |
 | CLASS_AA | Urban / heavy traffic |
 
-## Design Workflow
+## What happens when you run `osdagbridge analyze`
 
-When you run `osdagbridge analyze`, the following steps are executed
-automatically:
+Under the hood the pipeline is:
 
 1. **Input validation** — Pydantic validates ranges, grades, and
    cross-references.

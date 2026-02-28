@@ -1,13 +1,13 @@
 # OsdagBridge
 
-> **Alpha (v0.1.x)** — The plate girder workflow is functional end-to-end.
-> Box girder and truss modules are stubs.  Desktop GUI and Web interface
-> are planned but not yet implemented.
+> **Alpha (v0.2.x)** — Plate girder workflow works end-to-end.
+> Box girder and truss are placeholder stubs. Desktop and web
+> interfaces exist as scaffolding only.
 
-OsdagBridge is a modular, shared-core software plugin for the analysis and
-design of steel bridges within the Osdag ecosystem.  It supports Desktop
-(PySide6), Web (Django + React), and CLI interfaces through a unified Python
-core.
+OsdagBridge is the bridge-design arm of the Osdag ecosystem.
+It handles analysis and design of steel highway bridges to Indian
+Standards, with a single Python core shared by the CLI, a PySide6
+desktop app, and a Django + React web front-end.
 
 ---
 
@@ -24,12 +24,12 @@ core.
 | Desktop GUI (PySide6) | Planned |
 | Web App (Django + React) | Planned |
 
-### Shared Core Architecture
-All numerical logic lives in `osdagbridge.core`.  The CLI, desktop, and web
-layers are thin wrappers that call into exactly the same design functions.
+### How the core is organised
+All number-crunching lives in `osdagbridge.core`.  The CLI, desktop, and web
+layers are thin shells that call the same design functions underneath.
 
-### Modular Bridge-Type System
-Each bridge type includes:
+### Bridge-type plugin system
+Each bridge type ships with:
 - DTO (input model schema)
 - Initial sizing routines
 - Structural analysis configuration
@@ -37,8 +37,8 @@ Each bridge type includes:
 - CAD geometry generation
 - Report generation utilities
 
-### Reusable Bridge Components
-Common structural elements are defined in `bridge_components/`:
+### Shared structural components
+Common elements sit in `bridge_components/`:
 - Girders  
 - Decks  
 - Crash barriers  
@@ -47,27 +47,28 @@ Common structural elements are defined in `bridge_components/`:
 - Foundations  
 - Piles and pile caps  
 
-Components are shared across multiple bridge types.
+Components are reused across different bridge types.
 
-### Multi-Solver Analysis Support
-Multiple analysis backends are supported:
+### Solver back-ends
+Three analysis engines are supported:
 - Native lightweight FEM solver  
 - OpenSeesPy  
 - OspGrillage  
 
-Solvers are switchable at runtime via adapters.
+You can switch solvers at run-time; the native one is always available.
 
-### Integrated Indian Standards
-Included under `core/utils/codes/`:
+### Indian design codes
+Bundled under `core/utils/codes/`:
 - IRC:6–2017  
 - IRC:22–2015  
 - IRC:24–2010  
 
-These modules provide load models, combinations, material factors, and code checks.
+These provide vehicle loads, load combinations, material factors, and
+code-level checks.
 
 ---
 
-## Project Structure
+## Layout
 
 ```
 bridge/
@@ -192,19 +193,20 @@ Continuous integration runs automatically through GitHub Actions (`.github/workf
 
 ## Roadmap
 
-- [ ] **v0.2** — Box girder initial sizing and design
-- [ ] **v0.2** — Truss bridge initial sizing and design
-- [ ] **v0.3** — Desktop GUI (PySide6) with form-based input
-- [ ] **v0.3** — LaTeX / PDF report generation
-- [ ] **v0.4** — Web backend (Django REST) and React frontend
-- [ ] **v0.4** — OpenSees / OspGrillage solver integration
-- [ ] **v0.5** — Seismic analysis (IRC:6 seismic clauses)
+- [ ] **v0.3** — Box girder sizing and design
+- [ ] **v0.3** — Truss bridge sizing and design
+- [ ] **v0.4** — Desktop GUI (PySide6) with proper forms
+- [ ] **v0.4** — LaTeX / PDF report export
+- [ ] **v0.5** — Django REST back-end and React front-end
+- [ ] **v0.5** — OpenSees / OspGrillage solver wiring
+- [ ] **v0.6** — Seismic analysis to IRC:6 seismic clauses
 
 ---
 
 ## Acknowledgements
 
-OsdagBridge is part of the Osdag project, promoting open-source tools for steel design education, research, and practice.
+OsdagBridge is part of the wider Osdag initiative — open-source tools
+for steel design in education, research, and practice.
 
 ---
 

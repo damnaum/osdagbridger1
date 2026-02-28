@@ -1,10 +1,8 @@
 """
-Unit tests for load combinations module.
+Load-combination tests.
 
-Tests verify:
-- Partial safety factors match code values
-- Load case factoring works correctly
-- All limit state combinations produce expected results
+Partial safety factors, factored totals, and the
+generate-all-combinations helper.
 """
 
 import pytest

@@ -1,23 +1,13 @@
 """
-IRC:22-2015 — Standard Specifications for Road Bridges
-Section VI: Composite Construction (Steel-Concrete)
+IRC:22-2015 — Composite Construction (Steel-Concrete).
 
-Provides modular ratio, effective width, and composite section capacity.
-Reference: IRC:22-2015
+Modular ratio, effective flange width, and composite section capacity
+for steel-concrete composite girders.
 """
 
 
 def get_modular_ratio(fck: float) -> float:
-    """Get modular ratio (Es/Ec) for composite design.
-
-    Args:
-        fck: Characteristic compressive strength of concrete in MPa
-
-    Returns:
-        Modular ratio m = Es / Ec
-
-    Reference: IRC:22-2015, Clause 604.3
-    """
+    """Short-term modular ratio m = E_s / E_c for the given concrete grade."""
     ec = 5000 * (fck ** 0.5)  # Short-term Ec in MPa (IS 456)
     es = 200_000.0  # MPa
     return es / ec
@@ -26,18 +16,7 @@ def get_modular_ratio(fck: float) -> float:
 def get_effective_flange_width(
     span: float, spacing: float, slab_thickness: float
 ) -> float:
-    """Effective flange width of concrete slab for composite action.
-
-    Args:
-        span: Effective span in mm
-        spacing: Centre-to-centre spacing of girders in mm
-        slab_thickness: Thickness of concrete deck slab in mm
-
-    Returns:
-        Effective flange width in mm
-
-    Reference: IRC:22-2015, Clause 603.2
-    """
+    """Effective slab flange width for composite action (Cl. 603.2)."""
     beff_options = [
         span / 4,
         spacing,

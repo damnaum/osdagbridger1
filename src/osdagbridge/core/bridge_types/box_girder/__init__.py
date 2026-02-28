@@ -1,6 +1,3 @@
-"""Box Girder Bridge Design Module (stub).
-
-Planned for v0.2.  Shares the same interface as ``plate_girder``.
-"""
+"""Box girder bridge design — not yet implemented; planned for v0.3."""
 
 IMPLEMENTED = False

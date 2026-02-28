@@ -1,4 +1,4 @@
-"""Truss designer module (stub)."""
+"""Truss design — not yet wired up."""
 
 from ...exceptions import OsdagError
 

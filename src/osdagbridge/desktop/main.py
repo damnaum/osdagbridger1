@@ -1,6 +1,6 @@
-"""Desktop GUI bootstrap (PySide6).
+"""PySide6 desktop bootstrap.
 
-Requires the 'desktop' extra: pip install -e ".[desktop]"
+Needs the ``desktop`` extra: ``pip install -e ".[desktop]"``.
 """
 import sys
 

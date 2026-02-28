@@ -1,9 +1,7 @@
-"""OsdagBridge — Modular analysis and design of steel bridges.
+"""OsdagBridge — analysis & design of steel highway bridges.
 
-Shared core for CLI, Desktop (PySide6), and Web (Django + React) interfaces.
-All numerical logic lives in ``osdagbridge.core``.
-
-Supported codes: IS 800:2007, IRC:6-2017, IRC:22-2015, IRC:24-2010.
+All heavy lifting lives in ``osdagbridge.core``; the CLI,
+desktop, and web layers are thin wrappers around it.
 """
 
 __version__ = "0.2.0"

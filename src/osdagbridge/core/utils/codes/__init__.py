@@ -1,4 +1,4 @@
-"""Indian design codes for bridge engineering."""
+"""Indian design-code helpers re-exported for convenience."""
 from .irc6_2017 import (
     AxleLoad,
     VehicleLoad,

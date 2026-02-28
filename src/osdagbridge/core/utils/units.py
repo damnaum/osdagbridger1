@@ -1,7 +1,6 @@
-"""Unit conversion utilities for bridge engineering.
+"""Unit conversion helpers.
 
-All internal calculations use: mm, kN, MPa, kN·m
-These helpers convert to/from common external units.
+Internal convention: mm, kN, MPa, kN·m.
 """
 
 

@@ -1,7 +1,4 @@
-"""Crash barrier mechanical properties.
-
-Provides default UDL values used in bridge dead-load estimates.
-"""
+"""Crash-barrier dead-load values (IRC Type P-3 default)."""
 
 from __future__ import annotations
 

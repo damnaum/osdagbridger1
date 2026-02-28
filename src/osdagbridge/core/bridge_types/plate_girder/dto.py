@@ -1,14 +1,9 @@
 """
-Plate Girder Bridge Data Transfer Object (DTO)
+Plate girder input & section data.
 
-Contains all input parameters needed for plate girder bridge design.
-Uses Pydantic for validation and serialization.
-Dimensions in mm, loads in kN unless otherwise noted.
-
-Reference codes:
-    - IS 2062 for steel grades
-    - IS 800:2007 for design methodology
-    - IRC:6-2017 for loading standards
+Dimensions in mm, loads in kN unless noted.
+Steel grades per IS 2062; design methodology IS 800:2007;
+live-load specs from IRC:6-2017.
 """
 
 from dataclasses import dataclass
@@ -19,83 +14,75 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class SteelGrade(str, Enum):
-    """Standard Indian steel grades as per IS 2062."""
-    E250A = "E250A"  # Fe 410 W A, fy = 250 MPa
-    E250B = "E250B"  # Fe 410 W B, fy = 250 MPa
-    E300 = "E300"    # Fe 440, fy = 300 MPa
-    E350 = "E350"    # Fe 490, fy = 350 MPa
-    E410 = "E410"    # Fe 540, fy = 410 MPa
-    E450 = "E450"    # Fe 570, fy = 450 MPa
+    """Indian structural steel grades (IS 2062)."""
+    E250A = "E250A"   # Fe 410 W A  — fy = 250 MPa
+    E250B = "E250B"   # Fe 410 W B  — fy = 250 MPa
+    E300 = "E300"     # Fe 440      — fy = 300 MPa
+    E350 = "E350"     # Fe 490      — fy = 350 MPa
+    E410 = "E410"     # Fe 540      — fy = 410 MPa
+    E450 = "E450"     # Fe 570      — fy = 450 MPa
 
 
 class BridgeSpanType(str, Enum):
-    """Bridge span configuration."""
+    """Span configuration."""
     SIMPLY_SUPPORTED = "simply_supported"
     CONTINUOUS_2_SPAN = "continuous_2_span"
     CONTINUOUS_3_SPAN = "continuous_3_span"
 
 
 class PlateGirderInput(BaseModel):
-    """
-    Input parameters for plate girder bridge design.
+    """Everything needed to kick off a plate girder design.
 
-    All dimensions in mm unless specified otherwise.
-    All loads in kN or kN/m unless specified otherwise.
-
-    Example:
-        >>> inp = PlateGirderInput(
-        ...     project_name="NH-44 ROB",
-        ...     bridge_name="Km 245+500",
-        ...     effective_span=30000,
-        ...     girder_spacing=3000,
-        ... )
+    Dimensions in mm, loads in kN/m unless noted otherwise.
+    Leave web/flange sizes as ``None`` to let the auto-sizer pick them.
     """
 
-    # Project identification
+    # --- project identification ---
     project_name: str = Field(..., min_length=1, max_length=200)
     bridge_name: str = Field(..., min_length=1, max_length=100)
-    chainage: Optional[str] = None  # e.g., "km 45+300"
+    chainage: Optional[str] = None
 
-    # Geometry - Span
+    # --- geometry ---
     effective_span: float = Field(..., gt=0, le=150000, description="Effective span in mm")
     span_type: BridgeSpanType = BridgeSpanType.SIMPLY_SUPPORTED
 
-    # Geometry - Cross section
+    # --- cross-section ---
     carriageway_width: float = Field(7500, gt=0, description="Clear carriageway width (mm)")
     num_lanes: int = Field(2, ge=1, le=8)
     footpath_width: float = Field(0, ge=0, description="Footpath width each side (mm)")
 
-    # Girder configuration
-    num_girders: int = Field(2, ge=2, le=10, description="Number of main girders")
+    # --- girders ---
+    num_girders: int = Field(2, ge=2, le=10)
     girder_spacing: float = Field(..., gt=0, description="C/c spacing of girders (mm)")
 
-    # Material properties
+    # --- materials ---
     steel_grade: SteelGrade = SteelGrade.E250A
-    concrete_grade: str = Field("M30", pattern=r"^M[0-9]{2}$")  # For deck slab
+    concrete_grade: str = Field("M30", pattern=r"^M[0-9]{2}$")
 
-    # Initial girder dimensions (can be auto-calculated if None)
+    # --- initial girder plate sizes (auto-calc if None) ---
     web_depth: Optional[float] = Field(None, gt=0, description="Web plate depth (mm)")
     web_thickness: Optional[float] = Field(None, gt=0, description="Web plate thickness (mm)")
     flange_width: Optional[float] = Field(None, gt=0, description="Flange plate width (mm)")
     flange_thickness: Optional[float] = Field(None, gt=0, description="Flange plate thickness (mm)")
 
-    # Loading specification
+    # --- loading ---
     live_load_class: Literal["CLASS_A", "CLASS_70R", "CLASS_AA"] = "CLASS_A"
     num_lanes_loaded: int = Field(2, ge=1)
 
-    # Additional dead loads
+    # --- superimposed dead loads ---
     wearing_coat_thickness: float = Field(75, ge=0, description="Wearing coat thickness (mm)")
     crash_barrier_load: float = Field(10.0, ge=0, description="Crash barrier UDL (kN/m)")
 
-    # Design parameters
+    # --- seismic (optional) ---
     include_seismic: bool = False
     seismic_zone: Optional[Literal["II", "III", "IV", "V"]] = None
 
     @field_validator("effective_span")
     @classmethod
     def validate_span(cls, v):
-        """Check span is within practical limits for plate girders."""
-        if v > 60000:  # 60m
+        """Plate girders rarely go beyond 60 m; past that, look at
+        box girder or cable-stayed alternatives."""
+        if v > 60000:
             raise ValueError(
                 f"Span {v / 1000:.1f}m exceeds typical plate girder limit of 60m. "
                 "Consider box girder or cable-stayed design."
@@ -105,7 +92,7 @@ class PlateGirderInput(BaseModel):
     @field_validator("web_depth")
     @classmethod
     def validate_web_depth(cls, v, info):
-        """Validate web depth against span if both are provided."""
+        """Catch obviously shallow webs early."""
         if v is not None:
             span = info.data.get("effective_span")
             if span and v < span / 25:
@@ -116,12 +103,7 @@ class PlateGirderInput(BaseModel):
         return v
 
     def get_yield_strength(self) -> float:
-        """
-        Get yield strength (fy) for the selected steel grade in MPa.
-
-        As per IS 2062:2011 Table 2 for nominal thickness <= 20mm.
-        For thicker plates, slight reduction applies (not implemented yet).
-        """
+        """fy in MPa (IS 2062 Table 2, thickness ≤ 20 mm)."""
         fy_map = {
             SteelGrade.E250A: 250.0,
             SteelGrade.E250B: 250.0,
@@ -133,11 +115,7 @@ class PlateGirderInput(BaseModel):
         return fy_map[self.steel_grade]
 
     def get_ultimate_strength(self) -> float:
-        """
-        Get ultimate tensile strength (fu) in MPa.
-
-        As per IS 2062:2011 Table 2.
-        """
+        """fu in MPa (IS 2062 Table 2)."""
         fu_map = {
             SteelGrade.E250A: 410.0,
             SteelGrade.E250B: 410.0,
@@ -149,57 +127,48 @@ class PlateGirderInput(BaseModel):
         return fu_map[self.steel_grade]
 
     def get_youngs_modulus(self) -> float:
-        """Young's modulus of steel in MPa (constant for all grades)."""
-        return 200000.0
+        """E in MPa — same for all structural steel grades."""
+        return 200_000.0
 
     def get_density_steel(self) -> float:
-        """Density of steel in kN/m³."""
+        """Steel density in kN/m³."""
         return 78.5
 
 
 @dataclass
 class PlateGirderSection:
-    """
-    Computed plate girder section properties.
+    """Computed cross-section properties ready for design checks."""
 
-    Stores both dimensions and derived cross-sectional properties
-    calculated from those dimensions. This is the output of
-    section property calculation, used as input for design checks.
-    """
-
-    # Dimensions
+    # plate dimensions (mm)
     web_depth: float             # mm - clear depth between flanges
     web_thickness: float         # mm
     top_flange_width: float      # mm
     top_flange_thickness: float  # mm
     bottom_flange_width: float   # mm
-    bottom_flange_thickness: float  # mm
+    bottom_flange_thickness: float
 
-    # Computed properties
-    total_depth: float              # mm
-    area: float                     # mm²
-    moment_of_inertia_xx: float     # mm⁴ (about strong axis)
-    moment_of_inertia_yy: float     # mm⁴ (about weak axis)
-    section_modulus_top: float       # mm³ (elastic, at top fiber)
-    section_modulus_bottom: float    # mm³ (elastic, at bottom fiber)
-    centroid_from_bottom: float     # mm
-    plastic_section_modulus: float  # mm³
+    # derived quantities
+    total_depth: float
+    area: float                       # mm²
+    moment_of_inertia_xx: float       # mm⁴ (strong axis)
+    moment_of_inertia_yy: float       # mm⁴ (weak axis)
+    section_modulus_top: float         # mm³
+    section_modulus_bottom: float      # mm³
+    centroid_from_bottom: float        # mm
+    plastic_section_modulus: float     # mm³
 
-    # Classification per IS 800:2007 Table 2
+    # IS 800 classification
     section_class: Literal["plastic", "compact", "semi-compact", "slender"]
-    web_slenderness: float      # d/tw ratio
-    flange_slenderness: float   # (b - tw)/(2*tf) outstand ratio
+    web_slenderness: float             # d/tw
+    flange_slenderness: float          # outstand ratio
 
     @property
     def weight_per_meter(self) -> float:
-        """Weight of girder per unit length in kN/m (density = 78.5 kN/m³)."""
-        area_m2 = self.area * 1e-6  # mm² to m²
-        return area_m2 * 78.5  # kN/m³ * m² = kN/m
+        """Girder weight per running metre (kN/m)."""
+        return self.area * 1e-6 * 78.5
 
     @property
     def shape_factor(self) -> float:
-        """Ratio of plastic to elastic section modulus (Zp/Ze)."""
-        z_elastic = min(self.section_modulus_top, self.section_modulus_bottom)
-        if z_elastic > 0:
-            return self.plastic_section_modulus / z_elastic
-        return 1.0
+        """Zp / Ze ratio."""
+        z_el = min(self.section_modulus_top, self.section_modulus_bottom)
+        return self.plastic_section_modulus / z_el if z_el > 0 else 1.0

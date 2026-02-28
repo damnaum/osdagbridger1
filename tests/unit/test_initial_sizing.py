@@ -1,4 +1,4 @@
-"""Unit tests for plate girder initial sizing module."""
+"""Tests for the initial-sizing re-export module."""
 import pytest
 
 from osdagbridge.core.bridge_types.plate_girder.dto import SteelGrade

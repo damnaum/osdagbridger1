@@ -1,4 +1,4 @@
-"""Vehicle load wrapper providing convenience functions."""
+"""Convenience wrapper to look up an IRC vehicle by its string name."""
 from ..utils.codes.irc6_2017 import (
     VehicleLoad,
     get_class_70r_bogie,
@@ -12,16 +12,9 @@ from ..utils.codes.irc6_2017 import (
 
 
 def get_vehicle_by_name(name: str) -> VehicleLoad:
-    """Get a vehicle load configuration by its string name.
+    """Return a ``VehicleLoad`` for the given IRC vehicle designation.
 
-    Args:
-        name: One of 'CLASS_A', 'CLASS_B', 'CLASS_70R', 'CLASS_AA', etc.
-
-    Returns:
-        VehicleLoad object
-
-    Raises:
-        ValueError: If vehicle name is not recognized
+    Raises ``ValueError`` for unrecognised names.
     """
     mapping = {
         "CLASS_A": get_class_a_train,

@@ -1,9 +1,8 @@
-"""Bridge types registry.
+"""Bridge-type registry.
 
-Provides a central lookup for bridge-type modules by name. Each bridge
-type is a sub-package that follows the standard interface:
-    dto.py, initial_sizing.py, analyser.py, designer.py,
-    cad_generator.py, report_generator.py
+Each bridge type lives in its own sub-package (plate_girder, box_girder,
+truss …) and exposes a common interface: dto, initial_sizing, analyser,
+designer, cad_generator, report_generator.
 """
 
 from __future__ import annotations

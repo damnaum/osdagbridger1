@@ -1,4 +1,4 @@
-"""Box girder report generator (stub)."""
+"""Box-girder reports — not yet wired up."""
 
 from ...exceptions import OsdagError
 

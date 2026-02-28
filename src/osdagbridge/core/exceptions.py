@@ -1,18 +1,18 @@
-"""Custom exceptions used across the OsdagBridge core.
+"""Custom exceptions for the OsdagBridge core.
 
-All public exceptions inherit from :class:`OsdagError` so that callers
-can catch the whole family with a single ``except OsdagError`` clause.
+Every public exception descends from ``OsdagError``, so callers can
+catch the whole lot with a single ``except OsdagError``.
 """
 
 from __future__ import annotations
 
 
 class OsdagError(Exception):
-    """Base exception for all OsdagBridge errors."""
+    """Root exception for anything OsdagBridge raises."""
 
 
 class DesignFailedError(OsdagError):
-    """Raised when a design check fails (capacity < demand)."""
+    """A design check came up short (demand > capacity)."""
 
     def __init__(self, check_name: str, demand: float, capacity: float) -> None:
         self.check_name = check_name
@@ -24,19 +24,19 @@ class DesignFailedError(OsdagError):
 
 
 class InputValidationError(OsdagError):
-    """Raised when input parameters are invalid or out of range."""
+    """Input parameters are out of range or nonsensical."""
 
 
 class SolverError(OsdagError):
-    """Raised when a structural solver fails to converge or errors out."""
+    """The structural solver blew up or didn't converge."""
 
 
 class ConfigurationError(OsdagError):
-    """Raised when a configuration file is malformed or missing keys."""
+    """YAML / config file is malformed or missing required keys."""
 
 
 class CodeNotFoundError(OsdagError):
-    """Raised when a requested design code module is not registered."""
+    """No design-code module registered under the requested name."""
 
     def __init__(self, code_name: str) -> None:
         self.code_name = code_name

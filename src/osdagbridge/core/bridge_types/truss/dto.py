@@ -1,13 +1,15 @@
-"""Truss Bridge Data Transfer Object (stub)."""
+"""Truss bridge input data (on the roadmap)."""
 
 from __future__ import annotations
 
+from enum import Enum
 from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
 
-class TrussType(str):
+class TrussType(str, Enum):
+    """Typical highway truss layouts."""
     PRATT = "pratt"
     WARREN = "warren"
     HOWE = "howe"
@@ -15,10 +17,7 @@ class TrussType(str):
 
 
 class TrussBridgeInput(BaseModel):
-    """Input parameters for truss bridge design (stub).
-
-    All dimensions in mm, loads in kN unless specified.
-    """
+    """Truss input (placeholder — fields will grow)."""
 
     project_name: str = Field(..., min_length=1, max_length=200)
     bridge_name: str = Field(..., min_length=1, max_length=100)

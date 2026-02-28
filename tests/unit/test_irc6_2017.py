@@ -1,11 +1,8 @@
 """
-Unit tests for IRC:6-2017 vehicle load module.
+IRC:6-2017 vehicle-load tests.
 
-Tests verify:
-- Vehicle configurations match code specifications
-- Impact factor calculations are correct
-- Axle spacings and loads are accurate
-- Lane distribution and congestion factors
+Make sure axle configs, impact factors, lane factors,
+and congestion factors match the code tables.
 """
 
 import math

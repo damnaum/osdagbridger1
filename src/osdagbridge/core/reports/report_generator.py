@@ -1,7 +1,7 @@
-"""Report generation for bridge design calculations.
+"""Plain-text design report generation.
 
-Generates structured calculation reports in text format.
-LaTeX/PDF generation requires the 'report' optional dependency.
+Keeps things basic intentionally — LaTeX / PDF output needs the
+``report`` optional extra (pylatex).
 """
 
 from __future__ import annotations

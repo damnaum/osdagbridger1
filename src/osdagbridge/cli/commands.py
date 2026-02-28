@@ -1,4 +1,4 @@
-"""CLI command implementations."""
+"""CLI command handlers — analysis, reporting, and project info."""
 
 from __future__ import annotations
 

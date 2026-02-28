@@ -1,4 +1,4 @@
-"""Box girder designer module (stub)."""
+"""Box-girder design — not yet wired up."""
 
 from ...exceptions import OsdagError
 

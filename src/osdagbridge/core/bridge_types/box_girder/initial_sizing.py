@@ -1,7 +1,4 @@
-"""Box girder initial sizing (stub).
-
-Will implement span/depth heuristics analogous to plate_girder.
-"""
+"""Box-girder preliminary sizing — not yet wired up."""
 
 from ...exceptions import OsdagError
 

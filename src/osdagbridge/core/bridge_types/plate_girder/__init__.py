@@ -1,8 +1,4 @@
-"""Plate Girder Bridge Design Module.
-
-Provides complete design workflow for steel plate girder bridges
-as per IS 800:2007 and IRC:24-2010.
-"""
+"""Plate-girder bridge design — IS 800:2007 / IRC:24-2010."""
 from .designer import (
     calculate_epsilon,
     calculate_moment_capacity,

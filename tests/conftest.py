@@ -1,4 +1,4 @@
-"""Shared test fixtures for OsdagBridge test suite."""
+"""Shared pytest fixtures for the bridge test suite."""
 import pytest
 
 from osdagbridge.core.bridge_types.plate_girder.dto import PlateGirderInput, SteelGrade
@@ -6,7 +6,7 @@ from osdagbridge.core.bridge_types.plate_girder.dto import PlateGirderInput, Ste
 
 @pytest.fixture
 def sample_plate_girder_input():
-    """Standard plate girder input for testing (30m span, Class A)."""
+    """30 m span, Class A, E250 — the go-to test input."""
     return PlateGirderInput(
         project_name="Test Project",
         bridge_name="Test Bridge",
@@ -20,7 +20,7 @@ def sample_plate_girder_input():
 
 @pytest.fixture
 def sample_70r_input():
-    """Plate girder input with 70R loading for testing."""
+    """25 m span, 70R, E350 — heavy-vehicle test input."""
     return PlateGirderInput(
         project_name="Test Project 70R",
         bridge_name="Test Bridge 70R",

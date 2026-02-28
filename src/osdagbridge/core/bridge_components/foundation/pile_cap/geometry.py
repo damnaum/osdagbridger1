@@ -1,23 +1,11 @@
-"""Pile cap geometry calculations.
-
-Supports rectangular pile caps for common pile group arrangements
-(2-pile, 4-pile, 6-pile layouts).
-"""
+"""Rectangular pile cap for typical 2/4/6-pile groups."""
 from dataclasses import dataclass
 from typing import List, Tuple
 
 
 @dataclass
 class PileCapGeometry:
-    """Rectangular pile cap.
-
-    Attributes:
-        length: Cap length along traffic direction (mm).
-        width: Cap width transverse to traffic (mm).
-        depth: Cap thickness (mm).
-        pile_diameter: Diameter of each pile (mm).
-        pile_positions: List of (x, y) centres relative to cap origin (mm).
-    """
+    """Rectangular pile cap — defaults to a 4-pile layout at 3D spacing."""
     length: float = 4000.0
     width: float = 4000.0
     depth: float = 1500.0

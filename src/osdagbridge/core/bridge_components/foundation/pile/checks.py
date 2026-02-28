@@ -1,7 +1,6 @@
-"""Pile capacity checks.
+"""Static-formula pile capacity (IS 2911 Part 1/Sec 2).
 
-Simplified static-formula approach for bored cast-in-situ piles
-in cohesive soil (IS 2911 Part 1/Sec 2).
+Only cohesive soil for now — granular layers need additional work.
 """
 from .geometry import PileGeometry
 
@@ -13,24 +12,7 @@ def axial_capacity(
     alpha: float = 0.45,
     factor_of_safety: float = 2.5,
 ) -> dict:
-    """Estimate safe axial bearing capacity.
-
-    Uses IS 2911 (Part 1/Sec 2) — static formula for bored piles
-    in cohesive soil.
-
-    Q_ult = α·cu·As  +  Nc·cu·Ab
-    Q_safe = Q_ult / FoS
-
-    Args:
-        pile: PileGeometry instance.
-        cu: Undrained cohesion of soil (kPa).
-        nc: Bearing capacity factor (default 9).
-        alpha: Adhesion factor for shaft friction (default 0.45).
-        factor_of_safety: FoS (default 2.5).
-
-    Returns:
-        dict with ultimate and safe capacities in kN.
-    """
+    """Safe bearing capacity via shaft friction + end bearing."""
     # Convert to consistent SI (m, kN)
     area_m2 = pile.cross_section_area * 1e-6
     shaft_area_m2 = pile.surface_area_embedded * 1e-6

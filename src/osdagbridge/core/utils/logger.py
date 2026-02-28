@@ -1,18 +1,10 @@
-"""Logging configuration for OsdagBridge."""
+"""Shared logging setup."""
 import logging
 import sys
 
 
 def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
-    """Get a configured logger for OsdagBridge modules.
-
-    Args:
-        name: Logger name (typically __name__ of the calling module)
-        level: Logging level (default INFO)
-
-    Returns:
-        Configured logger instance
-    """
+    """Return a logger prefixed with ``osdagbridge.``."""
     logger = logging.getLogger(f"osdagbridge.{name}")
     if not logger.handlers:
         handler = logging.StreamHandler(sys.stdout)

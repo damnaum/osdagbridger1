@@ -1,4 +1,4 @@
-"""Box girder CAD geometry generator (stub)."""
+"""Box-girder CAD output — not yet wired up."""
 
 from ...exceptions import OsdagError
 

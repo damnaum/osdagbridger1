@@ -1,7 +1,4 @@
-"""Crash barrier geometry.
-
-Standard IRC crash barrier (New-Jersey / F-shape) profile.
-"""
+"""Standard IRC crash barrier (NJ / F-shape) profile."""
 
 from __future__ import annotations
 
@@ -10,13 +7,7 @@ from dataclasses import dataclass
 
 @dataclass
 class CrashBarrierGeometry:
-    """Simplified crash barrier profile.
-
-    Attributes:
-        height: Total barrier height (mm).
-        base_width: Width at base (mm).
-        top_width: Width at top (mm).
-    """
+    """Simplified trapezoidal barrier cross-section."""
 
     height: float = 900.0
     base_width: float = 475.0

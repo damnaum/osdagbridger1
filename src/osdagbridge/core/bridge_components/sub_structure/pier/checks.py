@@ -1,7 +1,6 @@
-"""Pier capacity checks.
+"""Basic pier slenderness & axial checks (IS 456).
 
-Basic axial and slenderness checks for RC piers. Full seismic
-design is out of scope for v0.1.
+Seismic detailing is out of scope for now.
 """
 import math
 
@@ -9,15 +8,7 @@ from .geometry import PierGeometry
 
 
 def check_slenderness(pier: PierGeometry, effective_length_factor: float = 1.0) -> dict:
-    """Check pier slenderness ratio.
-
-    Args:
-        pier: PierGeometry instance.
-        effective_length_factor: K factor (1.0 for pinned-pinned).
-
-    Returns:
-        dict with slenderness ratio, classification, and limit.
-    """
+    """Slenderness ratio and short/long classification."""
     if pier.shape == "circular":
         radius_of_gyration = pier.breadth / 4  # r = D/4 for circle
     else:
@@ -39,16 +30,7 @@ def check_axial_capacity(
     fck: float = 30.0,
     axial_load_kN: float = 0.0,
 ) -> dict:
-    """Simplified axial capacity check for RC pier (IS 456 Clause 39.3).
-
-    Args:
-        pier: PierGeometry.
-        fck: Characteristic concrete strength (MPa).
-        axial_load_kN: Applied axial load (kN).
-
-    Returns:
-        dict with capacity and utilisation.
-    """
+    """Quick axial capacity estimate (IS 456 Cl. 39.3, ignoring rebar)."""
     area_mm2 = pier.cross_section_area
     # Simplified: Pu = 0.4 * fck * Ac (ignoring steel contribution)
     capacity_n = 0.4 * fck * area_mm2

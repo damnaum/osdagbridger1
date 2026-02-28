@@ -1,4 +1,4 @@
-"""Report generator specific to plate girder design output."""
+"""Plate-girder-specific report generation (delegates to the shared generator)."""
 from typing import Any, Dict
 
 from ...reports.report_generator import generate_text_report
@@ -9,15 +9,6 @@ def generate_plate_girder_report(
     bridge_name: str,
     design_results: Dict[str, Any],
 ) -> str:
-    """Generate a formatted design report for plate girder bridge.
-
-    Args:
-        project_name: Project name
-        bridge_name: Bridge name
-        design_results: Output from design_plate_girder()
-
-    Returns:
-        Formatted report string
-    """
+    """Produce a text report from ``design_plate_girder()`` output."""
     return generate_text_report(project_name, bridge_name, design_results)
 

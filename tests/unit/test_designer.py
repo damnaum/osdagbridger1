@@ -1,12 +1,6 @@
-"""Unit tests for plate girder designer module.
-
-Tests IS 800:2007 design calculations:
-- Section classification (Table 2)
-- Moment capacity (Clause 8.2)
-- Shear capacity (Clause 8.4)
-- Deflection check (IRC:24-2010)
-- Web bearing (Clause 8.7.4)
-- Full design workflow
+"""
+Designer-module tests — section classification, moment, shear,
+deflection, web bearing, and full design pipeline.
 """
 import math
 

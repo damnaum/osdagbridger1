@@ -1,16 +1,12 @@
-"""Adapter for OspGrillage grillage analysis engine.
+"""ospgrillage adapter (optional dependency).
 
-Wraps ospgrillage calls to provide a consistent interface
-for bridge grillage analysis. Requires `pip install ospgrillage`.
+Wraps the ospgrillage library for full grillage analysis.
+Install with ``pip install ospgrillage`` if needed.
 """
 
 
 class OspGrillageAdapter:
-    """Adapter to run bridge grillage analysis using ospgrillage.
-
-    Provides methods to build a grillage model from bridge geometry,
-    apply loads, and extract results.
-    """
+    """Thin wrapper around the ospgrillage grillage modeller."""
 
     def __init__(self):
         self._available = False

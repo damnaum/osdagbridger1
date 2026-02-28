@@ -1,4 +1,4 @@
-"""Integration tests for CLI commands with plate girder workflow."""
+"""CLI integration tests — runs the actual ``osdagbridge`` commands."""
 import json
 import subprocess
 import sys

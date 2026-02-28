@@ -1,4 +1,4 @@
-"""Box girder structural analysis orchestrator (stub)."""
+"""Box-girder analysis — not yet wired up."""
 
 from ...exceptions import OsdagError
 

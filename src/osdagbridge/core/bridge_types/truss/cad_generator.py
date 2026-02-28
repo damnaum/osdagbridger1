@@ -1,4 +1,4 @@
-"""Truss CAD geometry generator (stub)."""
+"""Truss CAD output — not yet wired up."""
 
 from ...exceptions import OsdagError
 

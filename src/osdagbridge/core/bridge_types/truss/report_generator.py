@@ -1,4 +1,4 @@
-"""Truss report generator (stub)."""
+"""Truss reports — not yet wired up."""
 
 from ...exceptions import OsdagError
 

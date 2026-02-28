@@ -1,4 +1,4 @@
-"""Input validation utilities for engineering parameters."""
+"""Quick-and-dirty input guards for engineering parameters."""
 
 
 def validate_positive(value: float, name: str) -> float:

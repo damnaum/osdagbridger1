@@ -1,17 +1,10 @@
-"""I-section girder property calculations.
-
-Provides geometry helpers for standard I-shaped steel girders
-used across multiple bridge types.
-"""
+"""Section-property helpers for standard I-shaped steel girders."""
 from dataclasses import dataclass
 
 
 @dataclass
 class IGirderGeometry:
-    """Geometry of a standard I-shaped girder.
-
-    All dimensions in mm.
-    """
+    """Dimensions of an I-shaped girder (all in mm)."""
     web_depth: float
     web_thickness: float
     top_flange_width: float
@@ -33,10 +26,7 @@ def area(geom: IGirderGeometry) -> float:
 
 
 def moment_of_inertia_xx(geom: IGirderGeometry) -> float:
-    """Second moment of area about the strong axis (mm⁴).
-
-    Uses the parallel axis theorem for each component.
-    """
+    """Strong-axis I_xx via parallel-axis theorem (mm⁴)."""
     a_web = geom.web_depth * geom.web_thickness
     a_tf = geom.top_flange_width * geom.top_flange_thickness
     a_bf = geom.bottom_flange_width * geom.bottom_flange_thickness
@@ -56,11 +46,6 @@ def moment_of_inertia_xx(geom: IGirderGeometry) -> float:
 
 
 def weight_per_meter(geom: IGirderGeometry, density: float = 78.5) -> float:
-    """Self-weight per unit length (kN/m).
-
-    Args:
-        geom: Girder geometry
-        density: Steel density in kN/m³ (default 78.5)
-    """
+    """Self-weight per metre run (kN/m), default density 78.5 kN/m³."""
     return area(geom) * 1e-6 * density
 
