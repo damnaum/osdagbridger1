@@ -1,0 +1,1 @@
+"""truss cad generator (stub)."""

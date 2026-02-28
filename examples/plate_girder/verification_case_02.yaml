@@ -1,0 +1,21 @@
+# Verification Case 02 — 25 m simply-supported plate girder, E350, 70R
+# Based on DDCL design example for IRC 70R loading
+bridge_type: plate_girder
+input:
+  project_name: "Verification Case 02"
+  bridge_name: "VC-02 25m Span E350"
+  chainage: "km 25+500"
+  effective_span: 25000       # mm (25 m)
+  span_type: simply_supported
+  carriageway_width: 7500     # mm
+  num_lanes: 2
+  footpath_width: 0
+  num_girders: 3
+  girder_spacing: 3500        # mm
+  steel_grade: E350
+  concrete_grade: M35
+  live_load_class: CLASS_70R
+  num_lanes_loaded: 2
+  wearing_coat_thickness: 75  # mm
+  crash_barrier_load: 10.0    # kN/m
+  include_seismic: false

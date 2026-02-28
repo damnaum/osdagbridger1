@@ -1,0 +1,1 @@
+"""Crash barrier geometry stub."""

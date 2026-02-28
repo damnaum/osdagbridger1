@@ -1,0 +1,21 @@
+# Verification Case 01 — 20 m simply-supported plate girder, E250A, Class A
+# Based on DDCL design example for IRC Class A loading
+bridge_type: plate_girder
+input:
+  project_name: "Verification Case 01"
+  bridge_name: "VC-01 20m Span"
+  chainage: "km 10+000"
+  effective_span: 20000       # mm (20 m)
+  span_type: simply_supported
+  carriageway_width: 7500     # mm
+  num_lanes: 2
+  footpath_width: 0
+  num_girders: 2
+  girder_spacing: 3000        # mm
+  steel_grade: E250A
+  concrete_grade: M30
+  live_load_class: CLASS_A
+  num_lanes_loaded: 2
+  wearing_coat_thickness: 75  # mm
+  crash_barrier_load: 10.0    # kN/m
+  include_seismic: false

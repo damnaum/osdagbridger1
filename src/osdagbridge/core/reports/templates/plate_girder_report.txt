@@ -1,0 +1,79 @@
+================================================================================
+OSDAGBRIDGE — PLATE GIRDER DESIGN REPORT
+================================================================================
+Project : {{ project_name }}
+Bridge  : {{ bridge_name }}
+Date    : {{ date }}
+--------------------------------------------------------------------------------
+
+1. INPUT PARAMETERS
+-------------------
+  Effective span           : {{ effective_span }} mm
+  Girder spacing           : {{ girder_spacing }} mm
+  Steel grade              : {{ steel_grade }}
+  Live load class          : {{ live_load_class }}
+  Number of girders        : {{ num_girders }}
+
+2. SECTION DIMENSIONS
+---------------------
+  Web depth                : {{ web_depth }} mm
+  Web thickness            : {{ web_thickness }} mm
+  Flange width             : {{ flange_width }} mm
+  Flange thickness         : {{ flange_thickness }} mm
+  Total depth              : {{ total_depth }} mm
+
+3. SECTION PROPERTIES
+---------------------
+  Area                     : {{ area }} mm²
+  Ixx                      : {{ ixx }} mm⁴
+  Zx (top)                 : {{ zx_top }} mm³
+  Zx (bottom)              : {{ zx_bottom }} mm³
+  Zp                       : {{ zp }} mm³
+  Section class            : {{ section_class }}
+
+4. DEAD LOADS
+-------------
+  Girder self-weight       : {{ girder_sw }} kN/m
+  Deck slab                : {{ deck_sw }} kN/m
+  Wearing coat             : {{ wc_sw }} kN/m
+  Total DL                 : {{ total_dl }} kN/m
+
+5. LIVE LOAD EFFECTS
+--------------------
+  Max live BM              : {{ bm_live }} kN·m
+  Max live SF              : {{ sf_live }} kN
+  Distribution factor      : {{ dist_factor }}
+
+6. FACTORED DESIGN FORCES (ULS)
+-------------------------------
+  γ_DL = {{ gamma_dl }}, γ_LL = {{ gamma_ll }}
+  Factored BM              : {{ bm_factored }} kN·m
+  Factored SF              : {{ sf_factored }} kN
+
+7. MOMENT CAPACITY CHECK (IS 800:2007, Cl. 8.2)
+-------------------------------------------------
+  Section moment capacity  : {{ md_section }} kN·m
+  LTB moment capacity      : {{ md_ltb }} kN·m
+  Governing Md             : {{ md_governing }} kN·m
+  Moment ratio             : {{ moment_ratio }}
+
+8. SHEAR CAPACITY CHECK (IS 800:2007, Cl. 8.4)
+------------------------------------------------
+  Design shear capacity    : {{ vd }} kN
+  Shear ratio              : {{ shear_ratio }}
+
+9. DEFLECTION CHECK (IRC:24-2010)
+----------------------------------
+  Total deflection         : {{ deflection }} mm
+  Allowable (L/600)        : {{ allowable }} mm
+  Status                   : {{ deflection_status }}
+
+10. SUMMARY
+-----------
+  Moment utilisation       : {{ moment_ratio }}
+  Shear utilisation        : {{ shear_ratio }}
+  Overall status           : {{ overall_status }}
+
+================================================================================
+END OF REPORT
+================================================================================

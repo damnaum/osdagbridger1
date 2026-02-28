@@ -1,0 +1,19 @@
+bridge_type: plate_girder
+input:
+  project_name: "NH-44 ROB Example"
+  bridge_name: "Km 245+500 ROB"
+  chainage: "km 245+500"
+  effective_span: 30000       # mm (30m)
+  span_type: simply_supported
+  carriageway_width: 7500     # mm
+  num_lanes: 2
+  footpath_width: 0
+  num_girders: 2
+  girder_spacing: 3000        # mm
+  steel_grade: E250A
+  concrete_grade: M30
+  live_load_class: CLASS_A
+  num_lanes_loaded: 2
+  wearing_coat_thickness: 75
+  crash_barrier_load: 10.0
+  include_seismic: false

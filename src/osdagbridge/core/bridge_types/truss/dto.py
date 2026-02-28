@@ -1,0 +1,1 @@
+"""truss DTO (stub)."""
